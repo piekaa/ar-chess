@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510255b0189f95d4481aa1e2239322fb, type: 3}
+  m_Name: WhitePieces
+  m_EditorClassIdentifier: 
+  pawn: {fileID: 7315979201073012936, guid: c95efd482cf748e478ec5b7233dc2fc2, type: 3}
+  rook: {fileID: 8536845426657632662, guid: 5af294b779d8dbb439e4a49d46a06fd4, type: 3}
+  knight: {fileID: 5278277099844223286, guid: d0c3dc5922eda1847b55bf69a293b505, type: 3}
+  bishop: {fileID: 6507134904431376270, guid: 5f927a36924748141b656a5b879abe6a, type: 3}
+  queen: {fileID: 9068327245324216369, guid: bd1ca6e1bc8e0594ab1f82d7c3ee634d, type: 3}
+  king: {fileID: 6726141158815409023, guid: 2143151b6cb60cf49ac6dd122d52b3c8, type: 3}

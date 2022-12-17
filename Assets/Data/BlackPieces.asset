@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510255b0189f95d4481aa1e2239322fb, type: 3}
+  m_Name: BlackPieces
+  m_EditorClassIdentifier: 
+  pawn: {fileID: 4142117189816083031, guid: be71a168a6b9b1d4e90b5668524a64e2, type: 3}
+  rook: {fileID: 1572133592867091358, guid: 40207c1880c857c40b360399bdd0fa82, type: 3}
+  knight: {fileID: 1052795461920623854, guid: fcc1b070c9e3ee542b12c41d6cfd4a8f, type: 3}
+  bishop: {fileID: 1695804279453212738, guid: 9d298239b64133d4e9ea4c89d309864a, type: 3}
+  queen: {fileID: 4884749881924139631, guid: 9957d693ccc2e904b9ac9f6bddcdeb33, type: 3}
+  king: {fileID: 8480911654590080137, guid: a30d77b162cba014cad87b74a424ae49, type: 3}
