@@ -22,14 +22,13 @@ public class LichessController : EventListener
         StartCoroutine(SendNulls());
     }
 
-
-    private void Update()
+    protected override void MyUpdate()
     {
         var message = webSocket.DequeueMessageOrNull();
         switch (message)
         {
             case WebSocketTextMessage textMessage:
-                Debug.Log(textMessage.Text);
+                // Debug.Log(textMessage.Text);
 
                 if (textMessage.Text.StartsWith("{"))
                 {
@@ -38,14 +37,14 @@ public class LichessController : EventListener
                     if (lichessMessage.t == "move" && lichessMessage.v % 2 == 0)
                     {
                         Debug.Log(lichessMessage.d.uci);
-                        EventSystem.Fire(EventName.EnemyMove, new EventData(lichessMessage.d.uci));
+                        EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
                     }
                 }
 
                 break;
 
             case WebScoketPingMessage pingMessage:
-                Debug.Log("Ping: " + string.Join(" ", pingMessage.Payload));
+                // Debug.Log("Ping: " + string.Join(" ", pingMessage.Payload));
                 webSocket.Send(pingMessage.Payload, 10);
 
                 break;
@@ -61,9 +60,9 @@ public class LichessController : EventListener
         }
     }
 
-    [Listen(EventName.PlayerMove)]
+    [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text + "\",\"a\":14}}");
+        webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
     }
 }

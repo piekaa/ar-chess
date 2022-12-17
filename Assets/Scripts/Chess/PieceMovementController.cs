@@ -6,7 +6,6 @@ using UnityEngine;
 public class PieceMovementController : EventListener
 {
     [SerializeField] private PiecesController piecesController;
-    [SerializeField] private GameInfo gameInfo;
     [SerializeField] private Board board;
 
 
@@ -80,28 +79,7 @@ public class PieceMovementController : EventListener
         return x < 0 || y < 0 || x >= 8 || y >= 8;
     }
 
-    [Listen(EventName.ChosenSquare)]
-    private void MovePiece(EventData eventData)
-    {
-        var square = eventData.GameObject.GetComponent<BoardSquare>();
-        
-        var otherPiece = piecesController.GetPiece(Board.PositionToIndex(square.name));
-
-        if (otherPiece)
-        {
-            piecesController.CapturePiece(otherPiece);
-        }
-
-        var startPosition = Board.IndexToPosition(piecesController.CurrentPieceBoardIndex(gameInfo.SelectedPiece));
-        var endPosition = square.name;
-        
-        EventSystem.Fire(EventName.PlayerMove, new EventData((startPosition+endPosition).ToLower()));
-
-        piecesController.MovePiece(gameInfo.SelectedPiece, square.name);
-        board.DeselectSquares();
-    }
-
-    [Listen(EventName.EnemyMove)]
+    [Listen(EventName.Move)]
     private void MoveEnemyPiece(EventData eventData)
     {
         var move = eventData.Text;
@@ -118,5 +96,10 @@ public class PieceMovementController : EventListener
         }
         
         piecesController.MovePiece(pieceToMove, secondSquare);
+    }
+
+    protected override void MyUpdate()
+    {
+        
     }
 }

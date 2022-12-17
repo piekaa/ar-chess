@@ -1,20 +1,19 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Selector : MonoBehaviour
+[MyState(State.WhiteMove)]
+public class Selector : EventListener
 {
-    [SerializeField] private GameInfo gameInfo;
-
     private Selectable lastSelected;
 
-    // todo redesign
-    private void Update()
+
+    protected override void MyUpdate()
     {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
         {
             if (Input.GetMouseButtonDown(0))
             {
+                //todo 
                 lastSelected?.Deselect();
                 lastSelected = hit.collider.GetComponentInParent<Selectable>();
                 lastSelected?.Select();
@@ -22,13 +21,14 @@ public class Selector : MonoBehaviour
                 var piece = lastSelected?.GetComponent<Piece>();
                 if (piece != null)
                 {
-                    gameInfo.PieceSelected(piece);
+                    GameInfo.SelectedPiece = piece;
+                    EventSystem.Fire(EventName.SelectedPiece, new EventData(piece.gameObject));
                 }
 
                 var square = hit.collider.GetComponent<BoardSquare>();
                 if (square != null && square.Selected)
                 {
-                    gameInfo.SquareChosen(square);
+                    EventSystem.Fire(EventName.ChosenSquare, new EventData(square));
                 }
             }
             else

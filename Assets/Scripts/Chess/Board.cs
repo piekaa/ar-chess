@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Board : MonoBehaviour
+public class Board : EventListener
 {
     [SerializeField] private BoardSquare[] squares;
 
@@ -103,7 +103,8 @@ public class Board : MonoBehaviour
         lastSelectedSquares = indexes;
     }
 
-    public void DeselectSquares()
+    [Listen(EventName.Move)]
+    public void DeselectSquares(EventData eventData)
     {
         foreach (var squareIndex in lastSelectedSquares)
         {
@@ -111,5 +112,9 @@ public class Board : MonoBehaviour
 
             squares[squareIndex].Deselect();
         }
+    }
+
+    protected override void MyUpdate()
+    { 
     }
 }

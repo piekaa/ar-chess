@@ -31,6 +31,7 @@ public class PiecesController : MonoBehaviour
         piece.transform.position = board.GetPosition(position);
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
         piece.Deselect();
+        piece.position = position;
     }
 
     public void CapturePiece(Piece piece)
@@ -38,6 +39,7 @@ public class PiecesController : MonoBehaviour
         //todo animation
         piece.transform.position = piece.black ? board.CaptureSpotWhite(capturedBlack++) 
             : board.CaptureSpotBlack(capturedWhite++);
+        piece.position = "xx";
     }
 
     public bool IsFree(int index)

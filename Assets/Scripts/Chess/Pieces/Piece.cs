@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class Piece : Selectable
 {
     public bool black;
+    public string position;
 
     private VisualChanger visualChanger;
 

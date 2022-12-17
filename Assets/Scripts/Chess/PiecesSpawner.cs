@@ -19,58 +19,58 @@ public class PiecesSpawner
     {
         for (int i = 8; i < 16; i++)
         {
-            instantiate(whitePieces.Pawn, i);
+            Instantiate(whitePieces.Pawn, i);
         }
 
-        instantiate(whitePieces.Rook, "A1");
-        instantiate(whitePieces.Rook, "H1");
+        Instantiate(whitePieces.Rook, "A1");
+        Instantiate(whitePieces.Rook, "H1");
 
-        instantiateRotated180(whitePieces.Knight, "B1");
-        instantiateRotated180(whitePieces.Knight, "G1");
+        InstantiateRotated180(whitePieces.Knight, "B1");
+        InstantiateRotated180(whitePieces.Knight, "G1");
 
-        instantiate(whitePieces.Bishop, "C1");
-        instantiate(whitePieces.Bishop, "F1");
+        Instantiate(whitePieces.Bishop, "C1");
+        Instantiate(whitePieces.Bishop, "F1");
 
-        instantiate(whitePieces.Queen, "D1");
-        instantiate(whitePieces.King, "E1");
+        Instantiate(whitePieces.Queen, "D1");
+        Instantiate(whitePieces.King, "E1");
 
         for (int i = 8 * 6; i < 8 * 7; i++)
         {
-            instantiate(blackPieces.Pawn, i, true);
+            Instantiate(blackPieces.Pawn, i, true);
         }
 
-        instantiate(blackPieces.Rook, "A8", true);
-        instantiate(blackPieces.Rook, "H8" ,true);
+        Instantiate(blackPieces.Rook, "A8", true);
+        Instantiate(blackPieces.Rook, "H8" ,true);
 
-        instantiate(blackPieces.Knight, "B8", true);
-        instantiate(blackPieces.Knight, "G8", true);
+        Instantiate(blackPieces.Knight, "B8", true);
+        Instantiate(blackPieces.Knight, "G8", true);
 
-        instantiate(blackPieces.Bishop, "C8", true);
-        instantiate(blackPieces.Bishop, "F8", true);
+        Instantiate(blackPieces.Bishop, "C8", true);
+        Instantiate(blackPieces.Bishop, "F8", true);
 
-        instantiate(blackPieces.Queen, "D8", true);
-        instantiate(blackPieces.King, "E8", true);
+        Instantiate(blackPieces.Queen, "D8", true);
+        Instantiate(blackPieces.King, "E8", true);
     }
 
-    private void instantiate(Piece piece, int index, bool black = false)
+    private void Instantiate(Piece piece, int index, bool black = false)
     {
-        var p = Object.Instantiate(piece, board.GetPosition(index), Quaternion.identity);
-        p.black = black;
-        piecesPositions.AddNewPiece(p, index);
+        Instantiate(piece, Board.IndexToPosition(index), black);
     }
 
-    private void instantiate(Piece piece, string position, bool black = false)
+    private void Instantiate(Piece piece, string position, bool black = false)
     {
         var p = Object.Instantiate(piece, board.GetPosition(position), Quaternion.identity);
         p.black = black;
+        p.position = position;
         piecesPositions.AddNewPiece(p, Board.PositionToIndex(position));
     }
 
-    private void instantiateRotated180(Piece piece, string position, bool black = false)
+    private void InstantiateRotated180(Piece piece, string position, bool black = false)
     {
         var p = Object.Instantiate(piece, board.GetPosition(position),
             Quaternion.Euler(0, 180, 0));
         p.black = black;
+        p.position = position;
         piecesPositions.AddNewPiece(p, Board.PositionToIndex(position));
     }
 }
