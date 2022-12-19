@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BoardSquare : MonoBehaviour
+public class BoardSquare : Selectable
 {
     private VisualChanger visualChanger;
 
@@ -15,6 +15,11 @@ public class BoardSquare : MonoBehaviour
     {
         visualChanger.Select();
         selected = true;
+    }
+
+    public override void Target()
+    {
+        visualChanger.HoverAfterSelect();
     }
 
     public void Deselect()

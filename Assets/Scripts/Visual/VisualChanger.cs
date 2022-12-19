@@ -11,6 +11,8 @@ public class VisualChanger : MonoBehaviour
     private bool dynamicMaterialFrame;
 
     private bool selected;
+    private bool hoverSelected;
+    
     
     private void Start()
     {
@@ -20,24 +22,41 @@ public class VisualChanger : MonoBehaviour
 
     private void Update()
     {
-        if (selected) return;
-        
-        if (!dynamicMaterialFrame)
+        if (selected)
         {
-            meshRenderer.material = originalMaterial;
+            if (!hoverSelected)
+            {
+                meshRenderer.material = materials.Select;
+            }   
         }
-        
+        else
+        {
+            if (!dynamicMaterialFrame)
+            {
+                meshRenderer.material = originalMaterial;
+            }    
+        }
+
+        hoverSelected = false;
         dynamicMaterialFrame = false;
     }
 
-    public void Hover()
+    public void HoverBeforeSelect()
     {
         if (selected) return;
         
-        meshRenderer.material = materials.Hover;
+        meshRenderer.material = materials.HoverBeforeSelect;
         dynamicMaterialFrame = true;
     }
 
+    public void HoverAfterSelect()
+    {
+        if (!selected) return;
+
+        meshRenderer.material = materials.HoverAfterSelect;
+        hoverSelected = true;
+    }
+    
     public void Select()
     {
         meshRenderer.material = materials.Select;

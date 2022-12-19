@@ -15,7 +15,7 @@ public abstract class Piece : Selectable
 
     public override void Target()
     {
-        visualChanger.Hover();
+        visualChanger.HoverBeforeSelect();
     }
 
     public override void Select()

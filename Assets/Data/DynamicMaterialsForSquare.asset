@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f573ad8933434b541bda7bcd5b54fa82, type: 3}
   m_Name: DynamicMaterialsForSquare
   m_EditorClassIdentifier: 
-  hover: {fileID: 0}
-  select: {fileID: 2100000, guid: 26b7902ef27b8604fb191f6c0a50e891, type: 2}
+  hoverBeforeSelect: {fileID: 0}
+  hoverAfterSelect: {fileID: 2100000, guid: 26b7902ef27b8604fb191f6c0a50e891, type: 2}
+  select: {fileID: 2100000, guid: 2c9b20c5ef7a7df4a8dc4d713628672e, type: 2}

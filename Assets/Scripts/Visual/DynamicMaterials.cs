@@ -4,12 +4,17 @@
 public class DynamicMaterials : ScriptableObject
 {
     [SerializeField]
-    private Material hover;
+    private Material hoverBeforeSelect;
+    
+    [SerializeField]
+    private Material hoverAfterSelect;
     
     [SerializeField]
     private Material select;
 
-    public Material Hover => hover;
+    public Material HoverBeforeSelect => hoverBeforeSelect;
+
+    public Material HoverAfterSelect => hoverAfterSelect;
 
     public Material Select => select;
 }

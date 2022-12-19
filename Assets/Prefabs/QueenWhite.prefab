@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 925925282384374512}
   - component: {fileID: 5817864137141129100}
   - component: {fileID: 2759444246223566215}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Balls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 5485566382981072896}
   - component: {fileID: 9068327245324216369}
   - component: {fileID: 1850421054702061866}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: QueenWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb10e8d049b2d84582f0c8eab18451f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &1850421054702061866
 MonoBehaviour:
   m_ObjectHideFlags: 0

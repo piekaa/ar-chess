@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5829280378924450577}
   - component: {fileID: 4884749881924139631}
   - component: {fileID: 2348130914490511653}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: QueenBlack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb10e8d049b2d84582f0c8eab18451f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &2348130914490511653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +140,7 @@ GameObject:
   - component: {fileID: 8441642490662678992}
   - component: {fileID: 2972944916085216428}
   - component: {fileID: 5953271970590602362}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Balls
   m_TagString: Untagged
   m_Icon: {fileID: 0}

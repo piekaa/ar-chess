@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4267722645855859713}
   - component: {fileID: 1052795461920623854}
   - component: {fileID: 5803713189776257062}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KnightBlack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b5a2e3d9646ba04d9cc4d032913c7e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &5803713189776257062
 MonoBehaviour:
   m_ObjectHideFlags: 0

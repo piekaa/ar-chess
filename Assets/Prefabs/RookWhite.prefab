@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1068374682802402288}
   - component: {fileID: 8536845426657632662}
   - component: {fileID: 7369100245534992880}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RookWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478ac6f5460d275488a8db2697145afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &7369100245534992880
 MonoBehaviour:
   m_ObjectHideFlags: 0

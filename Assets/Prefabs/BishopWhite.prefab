@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1349919812320195632}
   - component: {fileID: 6507134904431376270}
   - component: {fileID: 4384205465408465648}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BishopWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659a6714368db624ba228f4dd8eaf878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &4384205465408465648
 MonoBehaviour:
   m_ObjectHideFlags: 0

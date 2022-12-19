@@ -4,6 +4,7 @@ using UnityEngine;
 public enum State
 {
     Initial,
+    WaitingForGameToStart,
     WhiteMove,
     BlackMove
 }
@@ -11,6 +12,18 @@ public enum State
 
 public class StateSystem : EventListener
 {
+
+    public static StateSystem Instance
+    {
+        get;
+        private set;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     public State CurrentState
     {
         get;
@@ -20,21 +33,33 @@ public class StateSystem : EventListener
 
     private void Start()
     {
-        CurrentState = State.WhiteMove;
-        EventSystem.Fire(EventName.StateChange, new EventData(State.WhiteMove));
+        ChangeState(State.WaitingForGameToStart);
+    }
+
+    [Listen(EventName.StartGame)]
+    private void OnStart(EventData eventData)
+    {
+        ChangeState(State.WhiteMove);
     }
 
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        CurrentState = CurrentState == State.WhiteMove ? State.BlackMove : State.WhiteMove;
-        EventSystem.Fire(EventName.StateChange, new EventData(CurrentState));
+        ChangeState(CurrentState == State.WhiteMove ? State.BlackMove : State.WhiteMove);
+    }
+
+    private void ChangeState(State newState)
+    {
+        var oldState = CurrentState;
+        EventSystem.Fire(EventName.StateChange, new EventData(oldState, newState));
+        
     }
 
     [Listen(EventName.StateChange)]
     private void LogState(EventData eventData)
     {
-        Debug.Log("New state: " + eventData.State);
+        CurrentState = eventData.NewState;
+        Debug.Log("New state: " + eventData.NewState);
     }
 
     protected override void MyUpdate()

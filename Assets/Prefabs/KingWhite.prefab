@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4800558230312639504}
   - component: {fileID: 3662101024849360813}
   - component: {fileID: 2844082957735859668}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cross
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 5905159059978218911}
   - component: {fileID: 6726141158815409023}
   - component: {fileID: 4036534576884488469}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: KingWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 253410a4c9f6e6b4ea353a1ea000204c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &4036534576884488469
 MonoBehaviour:
   m_ObjectHideFlags: 0

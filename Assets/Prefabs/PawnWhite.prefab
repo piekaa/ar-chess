@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5413809899788371198}
   - component: {fileID: 7315979201073012936}
   - component: {fileID: 196534232117304107}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PawnWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7397f8d2fb177dd4f9024c144925baa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &196534232117304107
 MonoBehaviour:
   m_ObjectHideFlags: 0

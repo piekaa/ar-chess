@@ -1,15 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-[MyState(State.WhiteMove)]
-public class Selector : EventListener
+public abstract class Selector : EventListener
 {
     private Selectable lastSelected;
 
+    private Camera camera;
+    
+    private void Start()
+    {
+        camera = Camera.main;
+    }
 
     protected override void MyUpdate()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity))
+        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, Mathf.Infinity, LayerMask()))
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -37,4 +43,6 @@ public class Selector : EventListener
             }
         }
     }
+
+    protected abstract int LayerMask();
 }

@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LichessController : EventListener
 {
-    [SerializeField] private string gameId;
     private WebSocket webSocket;
 
-    void Start()
+    private Queue<WebSocketMessage> messagesBeforeStart = new();
+
+    public bool playingBlack = true;
+
+    private bool started = false;
+    
+    public void Connect(string gameId)
     {
         var cookie = Http.PostMultipartAndGetCookie("lichess.org", "/login", new Dictionary<string, string>
         {
@@ -22,19 +28,70 @@ public class LichessController : EventListener
         StartCoroutine(SendNulls());
     }
 
+    private void Start()
+    {
+        Debug.Log("start");
+    }
+
     protected override void MyUpdate()
     {
-        var message = webSocket.DequeueMessageOrNull();
+        if (webSocket == null)
+        {
+            return;
+        }
+
+        if (!started)
+        {
+            var message = webSocket.DequeueMessageOrNull();
+            switch (message)
+            {
+                case WebSocketTextMessage textMessage:
+                    Debug.Log(textMessage.Text);
+                    if (textMessage.Text.StartsWith("{"))
+                    {
+                        var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
+                        if (lichessMessage.t == "crowd")
+                        {
+                            EventSystem.Fire(EventName.StartGame, new EventData(lichessMessage.d.white ? "white" : "black"));
+                            started = true;
+                            foreach (var webSocketMessage in messagesBeforeStart)
+                            {
+                                HandleMessage(webSocketMessage);   
+                            }
+
+                            messagesBeforeStart = new();
+                        }
+                        else
+                        {
+                            messagesBeforeStart.Enqueue(message);
+                        }
+                    }
+                    break;
+
+                // todo move to websocket
+                case WebScoketPingMessage pingMessage:
+                    // Debug.Log("Ping: " + string.Join(" ", pingMessage.Payload));
+                    webSocket.Send(pingMessage.Payload, 10);
+                    break;
+            }
+        }
+        else
+        {
+            HandleMessage(webSocket.DequeueMessageOrNull());
+        }
+    }
+
+    private void HandleMessage(WebSocketMessage message)
+    {
         switch (message)
         {
             case WebSocketTextMessage textMessage:
-                // Debug.Log(textMessage.Text);
+                Debug.Log(textMessage.Text);
 
                 if (textMessage.Text.StartsWith("{"))
                 {
                     var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
-
-                    if (lichessMessage.t == "move" && lichessMessage.v % 2 == 0)
+                    if (lichessMessage.t == "move" && lichessMessage.v % 2 == (playingBlack ? 0 : 1))
                     {
                         Debug.Log(lichessMessage.d.uci);
                         EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
@@ -43,6 +100,7 @@ public class LichessController : EventListener
 
                 break;
 
+            // todo move to websocket
             case WebScoketPingMessage pingMessage:
                 // Debug.Log("Ping: " + string.Join(" ", pingMessage.Payload));
                 webSocket.Send(pingMessage.Payload, 10);
@@ -63,6 +121,14 @@ public class LichessController : EventListener
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
+        if (StateSystem.Instance.CurrentState == State.WhiteMove && playingBlack)
+        {
+            webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
+        }
+
+        if (StateSystem.Instance.CurrentState == State.BlackMove && !playingBlack)
+        {
+            webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
+        }
     }
 }

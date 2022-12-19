@@ -7,6 +7,7 @@ public enum EventName
     ChosenSquare,
     Move,
     StateChange,
+    StartGame,
 }
 
 public class EventData
@@ -15,7 +16,8 @@ public class EventData
     public readonly Piece Piece;
     public readonly BoardSquare BoardSquare;
     public readonly string Text;
-    public readonly State State;
+    public readonly State OldState;
+    public readonly State NewState;
 
     public EventData(GameObject gameObject)
     {
@@ -37,9 +39,10 @@ public class EventData
         BoardSquare = boardSquare;
     }
 
-    public EventData(State state)
+    public EventData(State oldState, State newState)
     {
-        State = state;
+        OldState = oldState;
+        NewState = newState;
     }
 }
 
@@ -76,10 +79,15 @@ public class EventSystem
             toFire.Enqueue(new KeyValuePair<EventName, EventData>(eventName, eventData));
         }
 
-        KeyValuePair<EventName, EventData> e;
-        while(toFire.TryDequeue(out e))
+        if (toFire.Count == 1)
         {
-            events[e.Key](e.Value);
+            while (toFire.Count > 0)
+            {
+                var e = toFire.Peek();
+                events[e.Key](e.Value);
+                toFire.Dequeue();
+            }
         }
+       
     }
 }

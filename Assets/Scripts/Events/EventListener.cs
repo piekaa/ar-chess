@@ -39,6 +39,11 @@ public abstract class EventListener : MonoBehaviour
         {
             myState = ((MyState)attributes[0]).State;
             EventSystem.Register(EventName.StateChange, OnStateChange);
+            if (myState == StateSystem.Instance.CurrentState)
+            {
+                active = true;
+                RegisterEvents();
+            }
         }
         else
         {
@@ -57,7 +62,7 @@ public abstract class EventListener : MonoBehaviour
 
     private void OnStateChange(EventData eventData)
     {
-        if (eventData.State == myState)
+        if (eventData.NewState == myState)
         {
             RegisterEvents();
             active = true;

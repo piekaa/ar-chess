@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6270083102157608319}
   - component: {fileID: 1572133592867091358}
   - component: {fileID: 6733979945313321767}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RookBlack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,6 +112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478ac6f5460d275488a8db2697145afa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  black: 0
+  position: 
 --- !u!114 &6733979945313321767
 MonoBehaviour:
   m_ObjectHideFlags: 0
