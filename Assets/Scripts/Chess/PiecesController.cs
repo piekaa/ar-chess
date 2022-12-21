@@ -28,7 +28,7 @@ public class PiecesController : MonoBehaviour
     public void MovePiece(Piece piece, string position)
     {
         //todo animation
-        piece.transform.position = board.GetPosition(position);
+        piece.Move(board.GetPosition(position));
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
         piece.Deselect();
         piece.position = position;

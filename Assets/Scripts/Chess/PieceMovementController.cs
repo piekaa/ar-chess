@@ -36,9 +36,10 @@ public class PieceMovementController : EventListener
         }
 
         moves.AddRange(AvailableCaptures(piece, currentIndex, startXY));
+        moves.AddRange(AvailableCastleMoves(piece, currentIndex, startXY));
         board.SelectSquares(moves);
     }
-    
+
     private List<int> AvailableCaptures(Piece piece, int currentIndex, Tuple<int, int> startXY)
     {
         var moves = new List<int>();
@@ -55,21 +56,63 @@ public class PieceMovementController : EventListener
                 {
                     break;
                 }
+
                 var otherPiece = piecesController.GetPiece(Board.XYToIndex(currentXY));
-                
+
                 if (otherPiece)
                 {
                     if (piece.black != otherPiece.black)
                     {
-                        moves.Add(Board.XYToIndex(currentXY));    
+                        moves.Add(Board.XYToIndex(currentXY));
                     }
+
                     break;
                 }
-
-                
             }
         }
+
         return moves;
+    }
+
+    private List<int> AvailableCastleMoves(Piece piece, int currentIndex, Tuple<int, int> startXY)
+    {
+        var moves = new List<int>();
+        var castleMoves = piece.CastleMoves(currentIndex);
+
+        foreach (var castleMove in castleMoves)
+        {
+            var move = castleMove.NextMove(startXY);
+            var direction = (move.Item1 - startXY.Item1) / 2;
+
+            for (var currentXY = NextCastleCheck(startXY, direction);
+                 !Overflow(currentXY);
+                 currentXY = NextCastleCheck(currentXY, direction))
+            {
+                var pieceAtCurrentPosition = piecesController.GetPiece(Board.XYToIndex(currentXY));
+                var rook = pieceAtCurrentPosition as Rook;
+
+                if (pieceAtCurrentPosition != null)
+                {
+                    if (rook == null)
+                    {
+                        break;
+                    }
+
+                    if (!rook.Moved)
+                    {
+                        moves.Add(Board.XYToIndex(move));
+                        break;
+                    }
+                }
+            }
+        }
+
+        return moves;
+    }
+
+    private Tuple<int, int> NextCastleCheck(Tuple<int, int> xy, int direction)
+    {
+        return new Tuple<int, int>(xy.Item1 + direction, xy.Item2);
     }
 
     private bool Overflow(Tuple<int, int> xy)
@@ -83,7 +126,7 @@ public class PieceMovementController : EventListener
     private void MoveEnemyPiece(EventData eventData)
     {
         var move = eventData.Text;
-        
+
         var firstSquare = move[..2].ToUpper();
         var secondSquare = move.Substring(2, 2).ToUpper();
 
@@ -94,12 +137,11 @@ public class PieceMovementController : EventListener
         {
             piecesController.CapturePiece(otherPiece);
         }
-        
+
         piecesController.MovePiece(pieceToMove, secondSquare);
     }
 
     protected override void MyUpdate()
     {
-        
     }
 }

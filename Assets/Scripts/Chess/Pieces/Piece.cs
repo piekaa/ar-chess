@@ -5,6 +5,9 @@ public abstract class Piece : Selectable
 {
     public bool black;
     public string position;
+    protected bool moved;
+
+    public bool Moved => moved;
 
     private VisualChanger visualChanger;
 
@@ -33,5 +36,16 @@ public abstract class Piece : Selectable
     public virtual List<MoveData> CaptureMoves(int currentIndex)
     {
         return AvailableMoves(currentIndex);
+    }
+    
+    public virtual List<MoveData> CastleMoves(int currentIndex)
+    {
+        return new();
+    }
+    
+    public void Move(Vector3 position)
+    {
+        transform.position = position;
+        moved = true;
     }
 }
