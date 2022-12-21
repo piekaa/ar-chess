@@ -53,11 +53,15 @@ class PiekaJsonDeserializer
                         }
                         else
                         {
-                            var item = createValueObjectAndSet(values.Peek().GetType(), values.Peek(), keys.Peek());
-
-                            // if (item != null)
+                            if (values.Peek() == null)
                             {
-                                values.Push(item);   
+                                values.Push(null);
+                            }
+                            else
+                            {
+                                var item = createValueObjectAndSet(values.Peek()?.GetType(), values.Peek(),
+                                    keys.Peek());
+                                values.Push(item);
                             }
                         }
                     }
@@ -70,10 +74,13 @@ class PiekaJsonDeserializer
                         }
                         else
                         {
-                            var item = createValueObjectAndSet(values.Peek().GetType(), values.Peek(), keys.Peek());
-
-                            if (item != null)
+                            if (values.Peek() == null)
                             {
+                                values.Push(new JSONArray(new List<object>()));
+                            }
+                            else
+                            {
+                                var item = createValueObjectAndSet(values.Peek().GetType(), values.Peek(), keys.Peek());
                                 values.Push(new JSONArray(item));
                             }
                         }
@@ -100,7 +107,10 @@ class PiekaJsonDeserializer
                     if (result.ArrayValue != null)
                     {
                         var jsonArray = (JSONArray)values.Peek();
-                        jsonArray.Add(getValueByType(result.ArrayValue, jsonArray.collectionItemType));
+                        if (jsonArray != null)
+                        {
+                            jsonArray.Add(getValueByType(result.ArrayValue, jsonArray.collectionItemType));
+                        }
                     }
 
                     if (result.stateResultAction == StateResultAction.END_ARRAY)
@@ -141,7 +151,7 @@ class PiekaJsonDeserializer
         {
             return;
         }
-        
+
         Type t = obj.GetType();
         if (obj is IDictionary)
         {
@@ -182,6 +192,11 @@ class PiekaJsonDeserializer
 
     private static object getValueByType(string value, Type t)
     {
+        if (t == typeof(object))
+        {
+            return new object();
+        }
+        
         if (t.IsAssignableFrom(typeof(int)))
         {
             return int.Parse(value);

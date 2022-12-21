@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class LichessController : EventListener
 {
@@ -12,7 +13,7 @@ public class LichessController : EventListener
     public bool playingBlack = true;
 
     private bool started = false;
-    
+
     public void Connect(string gameId)
     {
         var cookie = Http.PostMultipartAndGetCookie("lichess.org", "/login", new Dictionary<string, string>
@@ -52,11 +53,12 @@ public class LichessController : EventListener
                         var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
                         if (lichessMessage.t == "crowd")
                         {
-                            EventSystem.Fire(EventName.StartGame, new EventData(lichessMessage.d.white ? "white" : "black"));
+                            EventSystem.Fire(EventName.StartGame,
+                                new EventData(lichessMessage.d.white ? "white" : "black"));
                             started = true;
                             foreach (var webSocketMessage in messagesBeforeStart)
                             {
-                                HandleMessage(webSocketMessage);   
+                                HandleMessage(webSocketMessage);
                             }
 
                             messagesBeforeStart = new();
@@ -66,6 +68,7 @@ public class LichessController : EventListener
                             messagesBeforeStart.Enqueue(message);
                         }
                     }
+
                     break;
 
                 // todo move to websocket
@@ -90,11 +93,19 @@ public class LichessController : EventListener
 
                 if (textMessage.Text.StartsWith("{"))
                 {
-                    var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
-                    if (lichessMessage.t == "move" && lichessMessage.v % 2 == (playingBlack ? 0 : 1))
+                    try
                     {
-                        Debug.Log(lichessMessage.d.uci);
-                        EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
+                        var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
+                        if (lichessMessage.t == "move" && lichessMessage.v % 2 == (playingBlack ? 0 : 1))
+                        {
+                            FixCastleMove(lichessMessage);
+                            Debug.Log(lichessMessage.d.uci);
+                            EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("Piekson deserialization exception: " + e.Message);
                     }
                 }
 
@@ -106,6 +117,20 @@ public class LichessController : EventListener
                 webSocket.Send(pingMessage.Payload, 10);
 
                 break;
+        }
+    }
+
+    private void FixCastleMove(LichessMessage lichessMessage)
+    {
+        var line = lichessMessage.d.uci[1];
+        if (lichessMessage.d.san == "O-O")
+        {
+            lichessMessage.d.uci = "e" + line + "g" + line;
+        }
+        
+        if (lichessMessage.d.san == "O-O-O")
+        {
+            lichessMessage.d.uci = "e" + line + "c" + line;
         }
     }
 
