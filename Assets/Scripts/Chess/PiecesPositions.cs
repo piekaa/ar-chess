@@ -30,4 +30,9 @@ public class PiecesPositions
     {
         return piecesByIndex.ContainsKey(index) ? piecesByIndex[index] : null;
     }
+
+    public List<Piece> GetAllPieces()
+    {
+        return new(indexesByPiece.Keys);
+    }
 }

@@ -61,9 +61,4 @@ public class StateSystem : EventListener
         CurrentState = eventData.NewState;
         Debug.Log("New state: " + eventData.NewState);
     }
-
-    protected override void MyUpdate()
-    {
-        
-    }
 }

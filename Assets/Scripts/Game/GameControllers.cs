@@ -1,17 +1,24 @@
 ﻿using System;
+using Unity.Tutorials.Core.Editor;
 using UnityEngine;
 
 public class GameControllers : EventListener
 {
     [SerializeField] private string gameId;
-
-
     private LichessController lichessController;
     
     private void Start()
     {
-        lichessController = new GameObject().AddComponent<LichessController>();
-        lichessController.Connect(gameId);
+        new GameObject().AddComponent<PlayerController>();
+        if (!gameId.IsNullOrWhiteSpace())
+        {
+            lichessController = new GameObject().AddComponent<LichessController>();
+            lichessController.Connect(gameId);    
+        }
+        else
+        {
+            EventSystem.Fire(EventName.StartGame, new EventData("both"));
+        }
     }
 
     [Listen(EventName.StartGame)]
@@ -25,24 +32,39 @@ public class GameControllers : EventListener
 
         if (eventData.Text == "white")
         {
-            
-            var gameObject = new GameObject();
-            gameObject.AddComponent<WhiteSelector>();
-            gameObject.AddComponent<PlayerController>();
-            gameObject.transform.parent = transform;
-            lichessController.playingBlack = true;
+            CreateWhitePlayerController();
+        }
+        else if (eventData.Text == "black")
+        {
+            CreateBlackPlayerController();
         }
         else
         {
-            var gameObject = new GameObject();
-            gameObject.AddComponent<BlackSelector>();
-            gameObject.AddComponent<PlayerController>();
-            gameObject.transform.parent = transform;
-            lichessController.playingBlack = false;
+            CreateWhitePlayerController();
+            CreateBlackPlayerController();
         }
     }
-    
-    protected override void MyUpdate()
+
+    private void CreateWhitePlayerController()
     {
+        var gameObject = new GameObject();
+        gameObject.AddComponent<WhiteSelector>();
+        gameObject.transform.parent = transform;
+        if (lichessController != null)
+        {
+            lichessController.playingBlack = true;    
+        }
+        
+    }
+
+    private void CreateBlackPlayerController()
+    {
+        var gameObject = new GameObject();
+        gameObject.AddComponent<BlackSelector>();
+        gameObject.transform.parent = transform;
+        if (lichessController != null)
+        {
+            lichessController.playingBlack = false;    
+        }
     }
 }

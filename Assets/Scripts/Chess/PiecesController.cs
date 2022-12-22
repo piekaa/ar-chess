@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //todo rename
@@ -50,5 +51,10 @@ public class PiecesController : MonoBehaviour
     public Piece GetPiece(int index)
     {
         return piecesPositions.GetPiece(index);
+    }
+
+    public List<Piece> GetAllPieces()
+    {
+        return piecesPositions.GetAllPieces();
     }
 }

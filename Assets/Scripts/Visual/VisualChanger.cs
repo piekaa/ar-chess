@@ -12,6 +12,7 @@ public class VisualChanger : MonoBehaviour
 
     private bool selected;
     private bool hoverSelected;
+    private bool inCheck;
     
     
     private void Start()
@@ -33,7 +34,15 @@ public class VisualChanger : MonoBehaviour
         {
             if (!dynamicMaterialFrame)
             {
-                meshRenderer.material = originalMaterial;
+                if (inCheck)
+                {
+                    meshRenderer.material = materials.Check;
+                }
+                else
+                {
+                    meshRenderer.material = originalMaterial;    
+                }
+                
             }    
         }
 
@@ -67,5 +76,15 @@ public class VisualChanger : MonoBehaviour
     {
         meshRenderer.material = originalMaterial;
         selected = false;
+    }
+
+    public void Check()
+    {
+        inCheck = true;
+    }
+
+    public void Uncheck()
+    {
+        inCheck = false;
     }
 }

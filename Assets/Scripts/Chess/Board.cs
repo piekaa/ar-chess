@@ -113,8 +113,4 @@ public class Board : EventListener
             squares[squareIndex].Deselect();
         }
     }
-
-    protected override void MyUpdate()
-    { 
-    }
 }

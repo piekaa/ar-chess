@@ -109,5 +109,8 @@ public abstract class EventListener : MonoBehaviour
         }
     }
 
-    protected abstract void MyUpdate();
+    protected virtual void MyUpdate()
+    {
+        
+    }
 }

@@ -5,9 +5,4 @@
     {
         EventSystem.Fire(EventName.Move, new EventData((GameInfo.SelectedPiece.position+eventData.BoardSquare.name).ToUpper()));
     }
-
-    protected override void MyUpdate()
-    {
-        
-    }
 }
