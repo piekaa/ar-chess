@@ -21,15 +21,29 @@ public class PiecesController : MonoBehaviour
         new PiecesSpawner(whitePieces, blackPieces, board, piecesPositions).SpawnPiecesAtBeginningPositions();
     }
 
-    public int CurrentPieceBoardIndex(Piece piece)
+    public int GetPiecePositionIndex(Piece piece)
     {
         return piecesPositions.GetIndex(piece);
     }
 
-    public void MovePiece(Piece piece, string position)
+    public void SavePiecesPositions()
+    {
+        piecesPositions.Save();
+    }
+
+    public void RollbackPiecesPositions()
+    {
+        piecesPositions.Rollback();
+        foreach (var piece in piecesPositions.GetAllPieces())
+        {
+            MovePiece(piece, Board.IndexToPosition(piecesPositions.GetIndex(piece)), true);
+        }
+    }
+    
+    public void MovePiece(Piece piece, string position, bool forAnalyze = false)
     {
         //todo animation
-        piece.Move(board.GetPosition(position));
+        piece.Move(board.GetPosition(position), !forAnalyze);
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
         piece.Deselect();
         piece.position = position;
@@ -41,6 +55,7 @@ public class PiecesController : MonoBehaviour
         piece.transform.position = piece.black ? board.CaptureSpotWhite(capturedBlack++) 
             : board.CaptureSpotBlack(capturedWhite++);
         piece.position = "xx";
+        piecesPositions.SetIndex(piece, -1);
     }
 
     public bool IsFree(int index)

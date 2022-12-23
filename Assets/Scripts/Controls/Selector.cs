@@ -6,6 +6,8 @@ public abstract class Selector : EventListener
     private Selectable lastSelected;
 
     private Camera camera;
+
+    private int cooldown;
     
     private void Start()
     {
@@ -14,12 +16,19 @@ public abstract class Selector : EventListener
 
     protected override void MyUpdate()
     {
+        cooldown--;
+
+        if (cooldown > 0)
+        {
+            return;
+        }
+        
         RaycastHit hit;
         if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, Mathf.Infinity, LayerMask()))
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //todo 
+                //todo intellij hint
                 lastSelected?.Deselect();
                 lastSelected = hit.collider.GetComponentInParent<Selectable>();
                 lastSelected?.Select();
@@ -42,6 +51,11 @@ public abstract class Selector : EventListener
                 hit.collider.GetComponentInParent<Selectable>()?.Target();
             }
         }
+    }
+
+    protected override void EnterActiveState()
+    {
+        cooldown = 10;
     }
 
     protected abstract int LayerMask();

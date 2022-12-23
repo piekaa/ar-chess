@@ -66,6 +66,7 @@ public abstract class EventListener : MonoBehaviour
         {
             RegisterEvents();
             active = true;
+            EnterActiveState();
         }
         else
         {
@@ -110,6 +111,11 @@ public abstract class EventListener : MonoBehaviour
     }
 
     protected virtual void MyUpdate()
+    {
+        
+    }
+
+    protected virtual void EnterActiveState()
     {
         
     }

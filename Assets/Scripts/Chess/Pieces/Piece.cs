@@ -21,6 +21,7 @@ public abstract class Piece : Selectable
         visualChanger.HoverBeforeSelect();
     }
 
+    //todo fix, only stuck pieces are selected
     public override void Select()
     {
         visualChanger.Select();
@@ -43,9 +44,9 @@ public abstract class Piece : Selectable
         return new();
     }
     
-    public void Move(Vector3 position)
+    public void Move(Vector3 position, bool setMoved = true)
     {
         transform.position = position;
-        moved = true;
+        moved = setMoved;
     }
 }

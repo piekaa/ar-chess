@@ -20,7 +20,7 @@ public class PieceMovementController : EventListener
     private void ShowAvailableMovements(EventData eventData)
     {
         var piece = eventData.GameObject.GetComponent<Piece>();
-        board.SelectSquares(boardAnalyzer.GetAvailableMovements(piece));
+        board.SelectSquares(boardAnalyzer.GetAvailableMoves(piece));
     }
     
     
@@ -56,9 +56,12 @@ public class PieceMovementController : EventListener
     private void CheckChecks()
     {
         kingInCheck?.GetComponent<VisualChanger>().Uncheck();
-        var king = boardAnalyzer.GetKingInCheckOrNull();
-        king?.GetComponent<VisualChanger>()?.Check();
-        kingInCheck = king;
+        var kingsInCheck = boardAnalyzer.GetKingsInCheck();
+        foreach (var king in kingsInCheck)
+        {
+            king.GetComponent<VisualChanger>()?.Check();
+            kingInCheck = king;    
+        }
     }
     
     private void RegularMove(string firstSquare, string secondSquare)
