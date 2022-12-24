@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 
 public class BoardAnalyzer
 {
@@ -38,6 +39,7 @@ public class BoardAnalyzer
 
         moves.AddRange(AvailableCaptures(piece, currentIndex, startXY));
         moves.AddRange(AvailableCastleMoves(piece, currentIndex, startXY));
+        moves.AddRange(AvailableEnPassantMoves(piece, currentIndex, startXY));
 
         return FilterMovesNotToCauseCheck(piece, moves);
     }
@@ -45,25 +47,27 @@ public class BoardAnalyzer
     private List<int> FilterMovesNotToCauseCheck(Piece piece, List<int> moves)
     {
         var result = new List<int>();
-        
+
         foreach (var positionIndex in moves)
         {
             piecesController.SavePiecesPositions();
 
             if (!piecesController.IsFree(positionIndex))
             {
-                piecesController.CapturePiece(piecesController.GetPiece(positionIndex));    
+                piecesController.CapturePiece(piecesController.GetPiece(positionIndex));
             }
 
             piecesController.MovePiece(piece, Board.IndexToPosition(positionIndex), true);
             var kingsInCheck = GetKingsInCheck();
-            
+
             if (kingsInCheck.Find(king => king.black == piece.black) == null)
             {
                 result.Add(positionIndex);
             }
+
             piecesController.RollbackPiecesPositions();
         }
+
         return result;
     }
 
@@ -81,6 +85,7 @@ public class BoardAnalyzer
                 }
             }
         }
+
         return kingsInCheck;
     }
 
@@ -157,7 +162,33 @@ public class BoardAnalyzer
                 }
             }
         }
+        return moves;
+    }
 
+    private List<int> AvailableEnPassantMoves(Piece piece, int currentIndex, Tuple<int, int> startXY)
+    {
+        var moves = new List<int>();
+        var enPassantMoves = piece.EnPassantMoves(currentIndex);
+
+        foreach (var enPassantMove in enPassantMoves)
+        {
+            var x = enPassantMove.NextMove(new Tuple<int, int>(0, 0)).Item1;
+            var enemyPawnPosition = new Tuple<int, int>(startXY.Item1 + x, startXY.Item2);
+            var enemyPawn = piecesController.GetPiece(Board.XYToIndex(enemyPawnPosition)) as Pawn;
+            
+            //todo moveNumber 
+
+            if (enemyPawn == null)
+            {
+                continue;
+            }
+
+            if (enemyPawn.LastMoveBoardDistanceY > 1)
+            {
+                moves.Add(Board.XYToIndex(enPassantMove.NextMove(startXY)));
+            }
+        }
+        
         return moves;
     }
 

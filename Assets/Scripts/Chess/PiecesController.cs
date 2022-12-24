@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,6 +16,10 @@ public class PiecesController : MonoBehaviour
 
     private int capturedBlack;
     private int capturedWhite;
+
+    private int moveNumber;
+
+    public int MoveNumber => moveNumber;
 
     private void Start()
     {
@@ -42,8 +47,12 @@ public class PiecesController : MonoBehaviour
     
     public void MovePiece(Piece piece, string position, bool forAnalyze = false)
     {
+
+        var currentLine = Board.IndexToPosition(piecesPositions.GetIndex(piece))[1];
+        var newLine = position[0];
+                     
         //todo animation
-        piece.Move(board.GetPosition(position), !forAnalyze);
+        piece.Move(board.GetPosition(position), ++moveNumber, Math.Abs(newLine - currentLine),  !forAnalyze);
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
         piece.Deselect();
         piece.position = position;

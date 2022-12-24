@@ -7,6 +7,14 @@ public abstract class Piece : Selectable
     public string position;
     protected bool moved;
 
+    protected int lastMoveNumber;
+    protected int lastMoveBoardDistanceY;
+
+
+    public int LastMoveNumber => lastMoveNumber;
+
+    public int LastMoveBoardDistanceY => lastMoveBoardDistanceY;
+
     public bool Moved => moved;
 
     private VisualChanger visualChanger;
@@ -43,9 +51,16 @@ public abstract class Piece : Selectable
     {
         return new();
     }
-    
-    public void Move(Vector3 position, bool setMoved = true)
+
+    public virtual List<MoveData> EnPassantMoves(int currentIndex)
     {
+        return new();
+    }
+    
+    public void Move(Vector3 position, int moveNumber, int boardDistanceY, bool setMoved = true)
+    {
+        lastMoveNumber = moveNumber;
+        lastMoveBoardDistanceY = boardDistanceY;
         transform.position = position;
         moved = setMoved;
     }
