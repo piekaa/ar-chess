@@ -44,10 +44,9 @@ public class PiecesController : MonoBehaviour
             MovePiece(piece, Board.IndexToPosition(piecesPositions.GetIndex(piece)), true);
         }
     }
-    
+
     public void MovePiece(Piece piece, string position, bool forAnalyze = false)
     {
-
         var currentLine = Board.IndexToPosition(piecesPositions.GetIndex(piece))[1];
         var newLine = position[0];
 
@@ -55,18 +54,25 @@ public class PiecesController : MonoBehaviour
         {
             moveNumber++;
         }
-                     
+
         //todo animation
-        piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine),  !forAnalyze);
+        piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine), !forAnalyze);
+
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
-        piece.Deselect();
+
+        if (!forAnalyze)
+        {
+            piece.Deselect();
+        }
+        
         piece.position = position;
     }
 
     public void CapturePiece(Piece piece)
     {
         //todo animation
-        piece.transform.position = piece.black ? board.CaptureSpotWhite(capturedBlack++) 
+        piece.transform.position = piece.black
+            ? board.CaptureSpotWhite(capturedBlack++)
             : board.CaptureSpotBlack(capturedWhite++);
         piece.position = "xx";
         piecesPositions.SetIndex(piece, -1);
@@ -76,7 +82,7 @@ public class PiecesController : MonoBehaviour
     {
         return GetPiece(index) == null;
     }
-    
+
     public Piece GetPiece(int index)
     {
         return piecesPositions.GetPiece(index);
