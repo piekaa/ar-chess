@@ -50,9 +50,14 @@ public class PiecesController : MonoBehaviour
 
         var currentLine = Board.IndexToPosition(piecesPositions.GetIndex(piece))[1];
         var newLine = position[0];
+
+        if (!forAnalyze)
+        {
+            moveNumber++;
+        }
                      
         //todo animation
-        piece.Move(board.GetPosition(position), ++moveNumber, Math.Abs(newLine - currentLine),  !forAnalyze);
+        piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine),  !forAnalyze);
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
         piece.Deselect();
         piece.position = position;

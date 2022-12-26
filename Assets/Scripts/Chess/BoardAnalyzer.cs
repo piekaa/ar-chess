@@ -162,6 +162,7 @@ public class BoardAnalyzer
                 }
             }
         }
+
         return moves;
     }
 
@@ -175,10 +176,13 @@ public class BoardAnalyzer
             var x = enPassantMove.NextMove(new Tuple<int, int>(0, 0)).Item1;
             var enemyPawnPosition = new Tuple<int, int>(startXY.Item1 + x, startXY.Item2);
             var enemyPawn = piecesController.GetPiece(Board.XYToIndex(enemyPawnPosition)) as Pawn;
-            
-            //todo moveNumber 
 
             if (enemyPawn == null)
+            {
+                continue;
+            }
+            
+            if (enemyPawn.LastMoveNumber != piecesController.MoveNumber)
             {
                 continue;
             }
@@ -188,7 +192,7 @@ public class BoardAnalyzer
                 moves.Add(Board.XYToIndex(enPassantMove.NextMove(startXY)));
             }
         }
-        
+
         return moves;
     }
 
