@@ -79,6 +79,11 @@ public class Board : EventListener
         return new Tuple<int, int>(column, row);
     }
 
+    public static string XYToPosition(Tuple<int, int> xy)
+    {
+        return IndexToPosition(XYToIndex(xy));
+    }
+    
     public static int XYToIndex(Tuple<int, int> xy)
     {
         return xy.Item1 + xy.Item2 * 8;

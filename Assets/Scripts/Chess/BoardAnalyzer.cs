@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditor;
 
 public class BoardAnalyzer
 {
@@ -13,7 +12,7 @@ public class BoardAnalyzer
         this.piecesController = piecesController;
     }
 
-    public List<int> GetAvailableMoves(Piece piece)
+    public List<int> GetAvailableMoves(Piece piece, bool checkCastle = true)
     {
         var moves = new List<int>();
         var currentIndex = piecesController.GetPiecePositionIndex(piece);
@@ -38,7 +37,10 @@ public class BoardAnalyzer
         }
 
         moves.AddRange(AvailableCaptures(piece, currentIndex, startXY));
-        moves.AddRange(AvailableCastleMoves(piece, currentIndex, startXY));
+        if (checkCastle)
+        {
+            moves.AddRange(AvailableCastleMoves(piece, currentIndex, startXY));    
+        }
         moves.AddRange(AvailableEnPassantMoves(piece, currentIndex, startXY));
 
         return FilterMovesNotToCauseCheck(piece, moves);
@@ -139,6 +141,23 @@ public class BoardAnalyzer
         {
             var move = castleMove.NextMove(startXY);
             var direction = (move.Item1 - startXY.Item1) / 2;
+            
+            var inCheck = false;
+
+            for (var i = 0; i <= 2; i++)
+            {
+                var checkCheckMove = NextCastleCheck(startXY, i * direction);
+                if (IsUnderAttack(Board.XYToPosition(checkCheckMove), piece.black))
+                {
+                    inCheck = true;
+                }
+            }
+
+            if (inCheck)
+            {
+                continue;
+            }
+
 
             for (var currentXY = NextCastleCheck(startXY, direction);
                  !Overflow(currentXY);
@@ -166,6 +185,19 @@ public class BoardAnalyzer
         return moves;
     }
 
+    private bool IsUnderAttack(string position, bool black)
+    {
+        foreach (var piece in piecesController.GetAllPieces().Where(piece => piece.black != black))
+        {
+            //todo handle pawn
+            if (GetAvailableMoves(piece, false).Contains(Board.PositionToIndex(position)))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private List<int> AvailableEnPassantMoves(Piece piece, int currentIndex, Tuple<int, int> startXY)
     {
         var moves = new List<int>();
@@ -181,7 +213,7 @@ public class BoardAnalyzer
             {
                 continue;
             }
-            
+
             if (enemyPawn.LastMoveNumber != piecesController.MoveNumber)
             {
                 continue;
