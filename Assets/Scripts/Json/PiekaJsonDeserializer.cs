@@ -305,10 +305,15 @@ class JSONArray
 {
     private IList list;
 
-    public Type collectionItemType;
+    public Type collectionItemType = typeof(object);
 
     public JSONArray(object collection)
     {
+        if (collection == null)
+        {
+            return;
+        }
+        
         if (typeof(IList).IsAssignableFrom(collection.GetType()))
         {
             var collectionType = collection.GetType();
@@ -328,7 +333,7 @@ class JSONArray
 
     public void Add(object value)
     {
-        list.Add(value);
+        list?.Add(value);
     }
 }
 

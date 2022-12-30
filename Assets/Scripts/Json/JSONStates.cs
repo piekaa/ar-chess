@@ -81,6 +81,7 @@ public abstract class BaseValueJsonState : IJsonState
     private string t = "true";
     private string f = "false";
     private bool boolean;
+    private bool isNull;
     private StringBuilder sb = new StringBuilder();
 
     protected abstract IJsonState nextOpenState();
@@ -110,6 +111,13 @@ public abstract class BaseValueJsonState : IJsonState
                 return null;
             }
 
+            if (c == 'n')
+            {
+                sb.Append(c);
+                isNull = true;
+                return null;
+            }
+
             if (c == '\"')
             {
                 return new StateResult(nextOpenState(), null, null, null, StateResultAction.NONE);
@@ -125,17 +133,26 @@ public abstract class BaseValueJsonState : IJsonState
                 return new StateResult(new ArrayJsonState(), null, null, null, StateResultAction.NEW_ARRAY);
             }
 
+            if (c == endChar())
             {
-                throw new InvalidOperationException("expected numeric value or \"");
+                return endState(sb.ToString());
             }
+
+            throw new InvalidOperationException("expected numeric value or \"");
         }
 
-        if ((c >= '0' && c <= '9') || c == '.' || t.Contains(c.ToString()) || f.Contains(c.ToString()))
+        if ((c >= '0' && c <= '9') || c == '.' || t.Contains(c.ToString()) || f.Contains(c.ToString()) ||
+            "null".Contains(c))
         {
             sb.Append(c);
             if (boolean && !t.StartsWith(sb.ToString()) && !f.StartsWith(sb.ToString()))
             {
                 throw new InvalidOperationException("Expected true or false, but was: " + sb);
+            }
+
+            if (isNull && !"null".StartsWith(sb.ToString()))
+            {
+                throw new InvalidOperationException("Expected null, but was: " + sb);
             }
 
             return null;

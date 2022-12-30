@@ -8,6 +8,65 @@ using UnityEngine;
 
 public class Http
 {
+    public static string Get(string host, string path, string cookie)
+    {
+        string server = host;
+        TcpClient client = new TcpClient(server, 443);
+
+        var response = "";
+
+        using (SslStream sslStream = new SslStream(client.GetStream(), false,
+                   ValidateServerCertificate, null))
+        {
+            sslStream.AuthenticateAsClient(server);
+
+            var requestHeaders =
+                "GET " + path + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "Cookie: " + cookie + "\r\n" +
+                // "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0\r\n" +
+                // "Accept: */*\r\n" +
+                // "Accept-Language: en-US,en;q=0.5\r\n" +
+                // "Accept-Encoding: gzip, deflate, br\r\n" +
+                // "X-Requested-With: XMLHttpRequest\r\n" +
+                // "Origin: https://" + host + "\r\n" +
+                // "Connection: keep-alive\r\n" +
+                // "Sec-Fetch-Dest: empty\r\n" +
+                // "Sec-Fetch-Mode: cors\r\n" +
+                // "Sec-Fetch-Site: same-origin\r\n" +
+                // "Pragma: no-cache\r\n" +
+                // "Cache-Control: no-cache\r\n" +
+                "TE: trailers\r\n\r\n";
+
+            sslStream.Write(Encoding.ASCII.GetBytes(requestHeaders));
+
+            var responseHeaders = ReadResponseHeaders(sslStream);
+
+            Debug.Log(responseHeaders);
+            
+            var contentLengthPosition = responseHeaders.IndexOf("Content-Length: ") + "Content-Length: ".Length;
+            var contentLengthString = "";
+
+
+            for (var i = contentLengthPosition; Char.IsNumber(responseHeaders[i]); i++)
+            {
+                contentLengthString += responseHeaders[i];
+            }
+
+            var contentLength = int.Parse(contentLengthString);
+
+            
+            Debug.Log(contentLength);
+            
+            for (int i = 0; i < contentLength; i++)
+            {
+                response += (char)sslStream.ReadByte();
+            }
+        }
+
+        return response;
+    }
+
     public static string PostMultipartAndGetCookie(string host, string path, Dictionary<string, string> body)
     {
         string server = host;
@@ -33,7 +92,7 @@ public class Http
             loginBody += "-----------------------------13544320162248662364810109147--\r\n";
 
             var loginHeaders =
-                "POST "+path+" HTTP/1.1\r\n" +
+                "POST " + path + " HTTP/1.1\r\n" +
                 "Host: " + host + "\r\n" +
                 "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0\r\n" +
                 "Accept: */*\r\n" +
@@ -73,12 +132,6 @@ public class Http
 
 
             cookie = responseString.Substring(cookieStartIndex, cookieEndIndex - cookieStartIndex);
-
-
-            // sslStream.ReadByte()
-
-
-            // This is where you read and send data
         }
 
         client.Close();
