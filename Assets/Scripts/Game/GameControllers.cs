@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class GameControllers : EventListener
 {
-    [SerializeField] private string gameId;
+    [SerializeField] private string mainPagePath;
     private LichessController lichessController;
     
     private void Start()
     {
         new GameObject().AddComponent<PlayerController>();
-        if (!gameId.IsNullOrWhiteSpace())
+        if (!mainPagePath.IsNullOrWhiteSpace())
         {
             lichessController = new GameObject().AddComponent<LichessController>();
-            lichessController.Connect(gameId);    
+            lichessController.Connect(mainPagePath);    
         }
         else
         {
