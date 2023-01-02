@@ -6,7 +6,9 @@ public enum State
     Initial,
     WaitingForGameToStart,
     WhiteMove,
-    BlackMove
+    BlackMove,
+    WhitePromotion,
+    BlackPromotion,
 }
 
 
@@ -48,10 +50,16 @@ public class StateSystem : EventListener
         ChangeState(CurrentState == State.WhiteMove ? State.BlackMove : State.WhiteMove);
     }
 
-    private void ChangeState(State newState)
+    [Listen(EventName.StartPromotion)]
+    private void OnPromotion(EventData eventData)
+    {
+        ChangeState(CurrentState == State.WhiteMove ? State.WhitePromotion : State.BlackPromotion);
+    }
+    
+    private void ChangeState(State newState, string eventText = "")
     {
         var oldState = CurrentState;
-        EventSystem.Fire(EventName.StateChange, new EventData(oldState, newState));
+        EventSystem.Fire(EventName.StateChange, new EventData(oldState, newState, eventText));
         
     }
 

@@ -20,12 +20,30 @@ public class PieceMovementController : EventListener
         board.SelectSquares(boardAnalyzer.GetAvailableMoves(piece));
     }
 
-
-    [Listen(EventName.Move)]
-    private void MovePiece(EventData eventData)
+    [Listen(EventName.PlayerMovedPiece)]
+    private void PlayerMovedPiece(EventData eventData)
     {
         var move = eventData.Text.ToUpper();
+        var firstSquare = move[..2];
+        var secondSquare = move.Substring(2, 2);
 
+        var pawn = piecesController.GetPiece(Board.PositionToIndex(firstSquare)) as Pawn;
+
+        if (pawn != null && secondSquare[1] is '1' or '8')
+        {
+            Debug.Log("Doszedl");
+            EventSystem.Fire(EventName.StartPromotion, eventData);
+        }
+        else
+        {
+            MovePiece(move);
+            EventSystem.Fire(EventName.Move, eventData);    
+        }
+        
+    } 
+
+    private void MovePiece(string move)
+    {
         var firstSquare = move[..2];
         var secondSquare = move.Substring(2, 2);
 

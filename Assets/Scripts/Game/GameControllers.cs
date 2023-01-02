@@ -49,18 +49,19 @@ public class GameControllers : EventListener
     {
         var gameObject = new GameObject();
         gameObject.AddComponent<WhiteSelector>();
+        gameObject.AddComponent<WhitePromotionSelector>();
         gameObject.transform.parent = transform;
         if (lichessController != null)
         {
             lichessController.playingBlack = true;    
         }
-        
     }
 
     private void CreateBlackPlayerController()
     {
         var gameObject = new GameObject();
         gameObject.AddComponent<BlackSelector>();
+        //todo black promotion selector
         gameObject.transform.parent = transform;
         if (lichessController != null)
         {

@@ -3,6 +3,6 @@
     [Listen(EventName.ChosenSquare)]
     private void MovePiece(EventData eventData)
     {
-        EventSystem.Fire(EventName.Move, new EventData((GameInfo.SelectedPiece.position+eventData.BoardSquare.name).ToUpper()));
+        EventSystem.Fire(EventName.PlayerMovedPiece, new EventData((GameInfo.SelectedPiece.position+eventData.BoardSquare.name).ToUpper()));
     }
 }

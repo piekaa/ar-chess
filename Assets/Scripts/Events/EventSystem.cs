@@ -8,6 +8,8 @@ public enum EventName
     Move,
     StateChange,
     StartGame,
+    PlayerMovedPiece,
+    StartPromotion,
 }
 
 public class EventData
@@ -39,10 +41,11 @@ public class EventData
         BoardSquare = boardSquare;
     }
 
-    public EventData(State oldState, State newState)
+    public EventData(State oldState, State newState, string text)
     {
         OldState = oldState;
         NewState = newState;
+        Text = text;
     }
 }
 
