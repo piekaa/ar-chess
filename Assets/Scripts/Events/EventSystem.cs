@@ -18,12 +18,19 @@ public class EventData
     public readonly Piece Piece;
     public readonly BoardSquare BoardSquare;
     public readonly string Text;
+    public readonly char Letter;
     public readonly State OldState;
     public readonly State NewState;
 
     public EventData(GameObject gameObject)
     {
         GameObject = gameObject;
+    }
+
+    public EventData(string text, char letter)
+    {
+        Text = text;
+        this.Letter = letter;
     }
 
     public EventData(string text)
@@ -76,7 +83,7 @@ public class EventSystem
 
     public static void Fire(EventName eventName, EventData eventData)
     {
-        Debug.Log("Event" + eventName);
+        Debug.Log("Event: " + eventName);
         if (events.ContainsKey(eventName))
         {
             toFire.Enqueue(new KeyValuePair<EventName, EventData>(eventName, eventData));

@@ -52,6 +52,25 @@ public class PiecesSpawner
         Instantiate(blackPieces.King, "E8", true);
     }
 
+    public void SpawnPiece(string position, char pieceType, bool black)
+    {
+        switch (pieceType)
+        {
+            case 'Q':
+                Instantiate(black ? blackPieces.Queen : whitePieces.Queen, position, black);
+                break;
+            case 'R':
+                Instantiate(black ? blackPieces.Queen : whitePieces.Rook, position, black);
+                break;
+            case 'K':
+                Instantiate(black ? blackPieces.Queen : whitePieces.King, position, black);
+                break;
+            case 'B':
+                Instantiate(black ? blackPieces.Queen : whitePieces.Bishop, position, black);
+                break;
+        }
+    }
+    
     private void Instantiate(Piece piece, int index, bool black = false)
     {
         Instantiate(piece, Board.IndexToPosition(index), black);

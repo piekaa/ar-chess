@@ -12,6 +12,8 @@ public class PiecesController : MonoBehaviour
 
     [SerializeField] private Board board;
 
+    private PiecesSpawner spawner;
+    
     private PiecesPositions piecesPositions = new();
 
     private int capturedBlack;
@@ -23,7 +25,8 @@ public class PiecesController : MonoBehaviour
 
     private void Start()
     {
-        new PiecesSpawner(whitePieces, blackPieces, board, piecesPositions).SpawnPiecesAtBeginningPositions();
+        spawner = new PiecesSpawner(whitePieces, blackPieces, board, piecesPositions);
+        spawner.SpawnPiecesAtBeginningPositions();
     }
 
     public int GetPiecePositionIndex(Piece piece)
@@ -91,5 +94,10 @@ public class PiecesController : MonoBehaviour
     public List<Piece> GetAllPieces()
     {
         return piecesPositions.GetAllPieces();
+    }
+
+    public void PromoteToPiece(string position, char pieceType, bool black)
+    {
+        spawner.SpawnPiece(position, pieceType, black);
     }
 }

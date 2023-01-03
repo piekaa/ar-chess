@@ -8,6 +8,8 @@ public class PieceMovementController : EventListener
     private BoardAnalyzer boardAnalyzer;
     private King kingInCheck;
 
+    private string lastPromotionMove = "";
+
     private void Awake()
     {
         boardAnalyzer = new BoardAnalyzer(piecesController);
@@ -17,7 +19,28 @@ public class PieceMovementController : EventListener
     private void ShowAvailableMovements(EventData eventData)
     {
         var piece = eventData.GameObject.GetComponent<Piece>();
+
+        var toPromote = piece as ToPromote;
+        if (toPromote != null)
+        {
+            return;
+        }
+
         board.SelectSquares(boardAnalyzer.GetAvailableMoves(piece));
+    }
+
+    [Listen(EventName.SelectedPiece)]
+    private void PromotePiece(EventData eventData)
+    {
+        var piece = eventData.GameObject.GetComponent<Piece>();
+        var toPromote = piece as ToPromote;
+        if (toPromote == null)
+        {
+            return;
+        }
+
+        EventSystem.Fire(EventName.Move,
+            new EventData((lastPromotionMove + toPromote.pieceFirstLetter).ToUpper(), toPromote.pieceFirstLetter));
     }
 
     [Listen(EventName.PlayerMovedPiece)]
@@ -26,6 +49,8 @@ public class PieceMovementController : EventListener
         var move = eventData.Text.ToUpper();
         var firstSquare = move[..2];
         var secondSquare = move.Substring(2, 2);
+
+        lastPromotionMove = move;
 
         var pawn = piecesController.GetPiece(Board.PositionToIndex(firstSquare)) as Pawn;
 
@@ -36,16 +61,36 @@ public class PieceMovementController : EventListener
         }
         else
         {
-            MovePiece(move);
-            EventSystem.Fire(EventName.Move, eventData);    
+            EventSystem.Fire(EventName.Move, eventData);
         }
-        
-    } 
+    }
 
-    private void MovePiece(string move)
+    [Listen(EventName.Move)]
+    private void MovePiece(EventData eventData)
     {
+        var move = eventData.Text;
+
+
         var firstSquare = move[..2];
         var secondSquare = move.Substring(2, 2);
+
+
+        if (move.Length == 5)
+        {
+            var pawnToPromote = piecesController.GetPiece(Board.PositionToIndex(firstSquare));
+            piecesController.CapturePiece(pawnToPromote);
+
+            var toCapture = piecesController.GetPiece(Board.PositionToIndex(secondSquare));
+
+            if (toCapture != null)
+            {
+                piecesController.CapturePiece(toCapture);
+            }
+            
+            piecesController.PromoteToPiece(secondSquare, eventData.Letter, pawnToPromote.black);
+            CheckChecks();
+            return;
+        }
 
         var pieceToMove = piecesController.GetPiece(Board.PositionToIndex(firstSquare));
 

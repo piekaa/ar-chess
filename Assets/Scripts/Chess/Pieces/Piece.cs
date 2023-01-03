@@ -4,6 +4,7 @@ using UnityEngine;
 public abstract class Piece : Selectable
 {
     public bool black;
+    [HideInInspector]
     public string position;
     protected bool moved;
 

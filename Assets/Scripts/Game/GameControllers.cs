@@ -61,7 +61,7 @@ public class GameControllers : EventListener
     {
         var gameObject = new GameObject();
         gameObject.AddComponent<BlackSelector>();
-        //todo black promotion selector
+        gameObject.AddComponent<BlackPromotionSelector>();
         gameObject.transform.parent = transform;
         if (lichessController != null)
         {

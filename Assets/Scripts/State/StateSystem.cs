@@ -14,23 +14,14 @@ public enum State
 
 public class StateSystem : EventListener
 {
-
-    public static StateSystem Instance
-    {
-        get;
-        private set;
-    }
+    public static StateSystem Instance { get; private set; }
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public State CurrentState
-    {
-        get;
-        private set;
-    } = State.Initial;
+    public State CurrentState { get; private set; } = State.Initial;
 
 
     private void Start()
@@ -47,7 +38,12 @@ public class StateSystem : EventListener
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        ChangeState(CurrentState == State.WhiteMove ? State.BlackMove : State.WhiteMove);
+        ChangeState(IsWhiteTurn() ? State.BlackMove : State.WhiteMove);
+    }
+
+    private bool IsWhiteTurn()
+    {
+        return CurrentState is State.WhiteMove or State.WhitePromotion;
     }
 
     [Listen(EventName.StartPromotion)]
@@ -55,12 +51,11 @@ public class StateSystem : EventListener
     {
         ChangeState(CurrentState == State.WhiteMove ? State.WhitePromotion : State.BlackPromotion);
     }
-    
+
     private void ChangeState(State newState, string eventText = "")
     {
         var oldState = CurrentState;
         EventSystem.Fire(EventName.StateChange, new EventData(oldState, newState, eventText));
-        
     }
 
     [Listen(EventName.StateChange)]
