@@ -41,9 +41,14 @@ public class StateSystem : EventListener
         ChangeState(IsWhiteTurn() ? State.BlackMove : State.WhiteMove);
     }
 
-    private bool IsWhiteTurn()
+    public bool IsWhiteTurn()
     {
         return CurrentState is State.WhiteMove or State.WhitePromotion;
+    }
+    
+    public bool IsBlackTurn()
+    {
+        return CurrentState is State.BlackMove or State.BlackPromotion;
     }
 
     [Listen(EventName.StartPromotion)]

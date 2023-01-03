@@ -68,7 +68,7 @@ public class PieceMovementController : EventListener
     [Listen(EventName.Move)]
     private void MovePiece(EventData eventData)
     {
-        var move = eventData.Text;
+        var move = eventData.Text.ToUpper();
 
 
         var firstSquare = move[..2];

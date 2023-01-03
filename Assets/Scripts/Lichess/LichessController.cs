@@ -68,7 +68,7 @@ public class LichessController : EventListener
         switch (message)
         {
             case WebSocketTextMessage textMessage:
-                // Debug.Log(textMessage.Text);
+                Debug.Log(textMessage.Text);
 
                 if (textMessage.Text.StartsWith("{"))
                 {
@@ -84,7 +84,8 @@ public class LichessController : EventListener
                     }
                     catch (Exception e)
                     {
-                        Debug.Log("Piekson deserialization exception: " + e.Message);
+                        Debug.Log(e.StackTrace);
+                        Debug.Log("Piekson deserialization exception: " + e.Message +  "\n For JSON: \n" + textMessage.Text);
                     }
                 }
 
@@ -125,12 +126,12 @@ public class LichessController : EventListener
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        if (StateSystem.Instance.CurrentState == State.WhiteMove && playingBlack)
+        if (StateSystem.Instance.IsWhiteTurn() && playingBlack)
         {
             webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
         }
 
-        if (StateSystem.Instance.CurrentState == State.BlackMove && !playingBlack)
+        if (StateSystem.Instance.IsWhiteTurn() && !playingBlack)
         {
             webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
         }
