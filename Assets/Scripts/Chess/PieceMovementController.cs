@@ -40,7 +40,7 @@ public class PieceMovementController : EventListener
         }
 
         EventSystem.Fire(EventName.Move,
-            new EventData((lastPromotionMove + toPromote.pieceFirstLetter).ToUpper(), toPromote.pieceFirstLetter));
+            new EventData((lastPromotionMove + toPromote.pieceFirstLetter).ToUpper()));
     }
 
     [Listen(EventName.PlayerMovedPiece)]
@@ -87,7 +87,7 @@ public class PieceMovementController : EventListener
                 piecesController.CapturePiece(toCapture);
             }
             
-            piecesController.PromoteToPiece(secondSquare, eventData.Letter, pawnToPromote.black);
+            piecesController.PromoteToPiece(secondSquare, move[4], pawnToPromote.black);
             CheckChecks();
             return;
         }

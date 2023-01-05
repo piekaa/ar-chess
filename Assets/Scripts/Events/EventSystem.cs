@@ -18,7 +18,6 @@ public class EventData
     public readonly Piece Piece;
     public readonly BoardSquare BoardSquare;
     public readonly string Text;
-    public readonly char Letter;
     public readonly State OldState;
     public readonly State NewState;
 
@@ -27,17 +26,11 @@ public class EventData
         GameObject = gameObject;
     }
 
-    public EventData(string text, char letter)
-    {
-        Text = text;
-        this.Letter = letter;
-    }
-
     public EventData(string text)
     {
         Text = text;
     }
-
+    
     public EventData(Piece piece)
     {
         Piece = piece;

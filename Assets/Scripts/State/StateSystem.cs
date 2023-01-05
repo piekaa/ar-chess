@@ -67,6 +67,6 @@ public class StateSystem : EventListener
     private void LogState(EventData eventData)
     {
         CurrentState = eventData.NewState;
-        Debug.Log("New state: " + eventData.NewState);
+        // Debug.Log("New state: " + eventData.NewState);
     }
 }

@@ -54,19 +54,21 @@ public class PiecesSpawner
 
     public void SpawnPiece(string position, char pieceType, bool black)
     {
+        var piecesDeck = black ? blackPieces : whitePieces;
+        
         switch (pieceType)
         {
             case 'Q':
-                Instantiate(black ? blackPieces.Queen : whitePieces.Queen, position, black);
+                Instantiate(piecesDeck.Queen, position, black);
                 break;
             case 'R':
-                Instantiate(black ? blackPieces.Queen : whitePieces.Rook, position, black);
+                Instantiate(piecesDeck.Rook, position, black);
                 break;
-            case 'K':
-                Instantiate(black ? blackPieces.Queen : whitePieces.King, position, black);
+            case 'N':
+                Instantiate(piecesDeck.Knight, position, black);
                 break;
             case 'B':
-                Instantiate(black ? blackPieces.Queen : whitePieces.Bishop, position, black);
+                Instantiate(piecesDeck.Bishop, position, black);
                 break;
         }
     }
