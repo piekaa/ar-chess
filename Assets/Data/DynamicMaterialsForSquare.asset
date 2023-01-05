@@ -15,3 +15,4 @@ MonoBehaviour:
   hoverBeforeSelect: {fileID: 0}
   hoverAfterSelect: {fileID: 2100000, guid: 26b7902ef27b8604fb191f6c0a50e891, type: 2}
   select: {fileID: 2100000, guid: 2c9b20c5ef7a7df4a8dc4d713628672e, type: 2}
+  check: {fileID: 2100000, guid: 495cce43fe70b3e4d9a3eaf0f50d867c, type: 2}

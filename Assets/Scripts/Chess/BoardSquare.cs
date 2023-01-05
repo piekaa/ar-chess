@@ -28,5 +28,15 @@ public class BoardSquare : Selectable
         selected = false;
     }
 
+    public void ShowLastMove()
+    {
+        visualChanger.Check();
+    }
+    
+    public void HideLastMove()
+    {
+        visualChanger.Uncheck();
+    }
+    
     public bool Selected => selected;
 }

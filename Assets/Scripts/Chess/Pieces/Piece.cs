@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Piece : Selectable
 {
     public bool black;
-    [HideInInspector]
-    public string position;
+    [HideInInspector] public string position;
     protected bool moved;
 
     protected int lastMoveNumber;
@@ -47,7 +47,7 @@ public abstract class Piece : Selectable
     {
         return AvailableMoves(currentIndex);
     }
-    
+
     public virtual List<MoveData> CastleMoves(int currentIndex)
     {
         return new();
@@ -57,12 +57,30 @@ public abstract class Piece : Selectable
     {
         return new();
     }
-    
-    public void Move(Vector3 position, int moveNumber, int boardDistanceY, bool setMoved = true)
+
+    public void Move(Vector3 position, int moveNumber, int boardDistanceY, bool forAnalyze = false)
     {
         lastMoveNumber = moveNumber;
         lastMoveBoardDistanceY = boardDistanceY;
-        transform.position = position;
-        moved = setMoved;
+
+        if (!forAnalyze)
+        {
+            StartCoroutine(LinearMoveAnimation(position));
+        }
+
+        moved = !forAnalyze;
+    }
+
+    private IEnumerator LinearMoveAnimation(Vector3 targetPosition)
+    {
+        var startPosition = transform.position;
+
+        for (float step = 0; step < 1; step += 10 * Time.deltaTime)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, step);
+            yield return null;
+        }
+
+        transform.position = targetPosition;
     }
 }

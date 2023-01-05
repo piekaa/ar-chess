@@ -150,7 +150,7 @@ public class LichessController : EventListener
             webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");
         }
 
-        if (StateSystem.Instance.IsWhiteTurn() && !playingBlack)
+        if (StateSystem.Instance.IsBlackTurn() && !playingBlack)
         {
             Debug.Log("Sending: " + eventData.Text.ToLower());
             webSocket.Send("{\"t\":\"move\",\"d\":{\"u\":\"" + eventData.Text.ToLower() + "\",\"a\":14}}");

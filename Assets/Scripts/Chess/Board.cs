@@ -16,6 +16,9 @@ public class Board : EventListener
 
     private List<int> lastSelectedSquares = new();
 
+    private BoardSquare lastMoveSquareFrom;
+    private BoardSquare lastMoveSquareTo;
+
     private void Awake()
     {
         for (var i = 0; i < squares.Length; i++)
@@ -117,5 +120,22 @@ public class Board : EventListener
 
             squares[squareIndex].Deselect();
         }
+    }
+
+    [Listen(EventName.Move)]
+    public void ShowLastMove(EventData eventData)
+    {
+        var move = eventData.Text.ToUpper();
+        var firstSquare = move[..2];
+        var secondSquare = move.Substring(2, 2);
+     
+        lastMoveSquareFrom?.HideLastMove();
+        lastMoveSquareTo?.HideLastMove();
+
+        lastMoveSquareFrom = squares[PositionToIndex(firstSquare)];
+        lastMoveSquareTo = squares[PositionToIndex(secondSquare)];
+        
+        lastMoveSquareFrom.ShowLastMove();
+        lastMoveSquareTo.ShowLastMove();
     }
 }

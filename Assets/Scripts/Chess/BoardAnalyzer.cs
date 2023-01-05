@@ -56,7 +56,7 @@ public class BoardAnalyzer
 
             if (!piecesController.IsFree(positionIndex))
             {
-                piecesController.CapturePiece(piecesController.GetPiece(positionIndex));
+                piecesController.CapturePiece(piecesController.GetPiece(positionIndex), true);
             }
 
             piecesController.MovePiece(piece, Board.IndexToPosition(positionIndex), true);

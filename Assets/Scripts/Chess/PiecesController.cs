@@ -59,7 +59,7 @@ public class PiecesController : MonoBehaviour
         }
 
         //todo animation
-        piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine), !forAnalyze);
+        piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine), forAnalyze);
 
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));
 
@@ -71,12 +71,16 @@ public class PiecesController : MonoBehaviour
         piece.position = position;
     }
 
-    public void CapturePiece(Piece piece)
+    public void CapturePiece(Piece piece, bool forAnalyze = false)
     {
-        //todo animation
-        piece.transform.position = piece.black
-            ? board.CaptureSpotWhite(capturedBlack++)
-            : board.CaptureSpotBlack(capturedWhite++);
+        if (!forAnalyze)
+        {
+            //todo animation
+            piece.transform.position = piece.black
+                ? board.CaptureSpotWhite(capturedBlack++)
+                : board.CaptureSpotBlack(capturedWhite++);    
+        }
+        
         piece.position = "xx";
         piecesPositions.SetIndex(piece, -1);
     }
