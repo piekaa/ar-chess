@@ -10,6 +10,7 @@ public enum EventName
     StartGame,
     PlayerMovedPiece,
     StartPromotion,
+    GameEnd,
 }
 
 public class EventData

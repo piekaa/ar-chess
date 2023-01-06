@@ -2,13 +2,14 @@
 {
     public string t;
     public int v;
-    public MovePayload d;
+    public MessagePayload d;
 }
 
-public class MovePayload
+public class MessagePayload
 {
     public string uci;
     public string san;
+    public string winner;
     public bool black;
     public bool white;
     public Promotion promotion;

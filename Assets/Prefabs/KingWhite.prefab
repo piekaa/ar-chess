@@ -95,7 +95,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3373637217756811669, guid: 480c6a8354ec594459f5eca17ce443b7, type: 3}
 --- !u!1 &4687892088659568250
@@ -196,7 +196,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4436083355500005894, guid: 480c6a8354ec594459f5eca17ce443b7, type: 3}
 --- !u!114 &6726141158815409023
@@ -213,6 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   black: 0
   position: 
+  CollapseForce: 0.007
 --- !u!114 &4036534576884488469
 MonoBehaviour:
   m_ObjectHideFlags: 0

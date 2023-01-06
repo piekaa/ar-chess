@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class Selectable : MonoBehaviour
+public abstract class Selectable : EventListener
 {
     public virtual void Target()
     {

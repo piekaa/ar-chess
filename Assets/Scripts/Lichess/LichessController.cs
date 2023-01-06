@@ -82,6 +82,11 @@ public class LichessController : EventListener
                             Debug.Log(lichessMessage.d.uci);
                             EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
                         }
+                        if (lichessMessage.t == "endData")
+                        {
+                            Debug.Log(lichessMessage.d.winner);
+                            EventSystem.Fire(EventName.GameEnd, new EventData(lichessMessage.d.winner));
+                        }
                     }
                     catch (Exception e)
                     {
