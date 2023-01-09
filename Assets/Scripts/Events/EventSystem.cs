@@ -11,6 +11,7 @@ public enum EventName
     PlayerMovedPiece,
     StartPromotion,
     GameEnd,
+    ClockUpdate,
 }
 
 public class EventData
@@ -21,6 +22,7 @@ public class EventData
     public readonly string Text;
     public readonly State OldState;
     public readonly State NewState;
+    public readonly ClockData ClockData;
 
     public EventData(GameObject gameObject)
     {
@@ -31,7 +33,13 @@ public class EventData
     {
         Text = text;
     }
-    
+
+    public EventData(string text, ClockData clockData)
+    {
+        Text = text;
+        ClockData = clockData;
+    }
+
     public EventData(Piece piece)
     {
         Piece = piece;
@@ -47,6 +55,11 @@ public class EventData
         OldState = oldState;
         NewState = newState;
         Text = text;
+    }
+
+    public EventData(ClockData clockData)
+    {
+        ClockData = clockData;
     }
 }
 
@@ -77,7 +90,7 @@ public class EventSystem
 
     public static void Fire(EventName eventName, EventData eventData)
     {
-        Debug.Log("Event: " + eventName);
+        // Debug.Log("Event: " + eventName);
         if (events.ContainsKey(eventName))
         {
             toFire.Enqueue(new KeyValuePair<EventName, EventData>(eventName, eventData));

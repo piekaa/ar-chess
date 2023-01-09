@@ -11,6 +11,9 @@ public abstract class Piece : Selectable
     protected int lastMoveNumber;
     protected int lastMoveBoardDistanceY;
 
+    private float groundY;
+    private bool groundYSet;
+
 
     public int LastMoveNumber => lastMoveNumber;
 
@@ -58,29 +61,73 @@ public abstract class Piece : Selectable
         return new();
     }
 
-    public void Move(Vector3 position, int moveNumber, int boardDistanceY, bool forAnalyze = false)
+    public virtual void Move(Vector3 position, int moveNumber, int boardDistanceY, bool forAnalyze = false)
     {
         lastMoveNumber = moveNumber;
         lastMoveBoardDistanceY = boardDistanceY;
 
         if (!forAnalyze)
         {
-            StartCoroutine(LinearMoveAnimation(position));
+            StartMoveAnimation(position);
         }
 
         moved = !forAnalyze;
     }
 
-    private IEnumerator LinearMoveAnimation(Vector3 targetPosition)
+    protected virtual void StartMoveAnimation(Vector3 targetPosition)
     {
-        var startPosition = transform.position;
+        StartCoroutine(MoveAnimation(targetPosition));
+    }
+
+    protected IEnumerator MoveAnimation(Vector3 targetPosition)
+    {
+        var startX = transform.position.x;
+        var startZ = transform.position.z;
 
         for (float step = 0; step < 1; step += 10 * Time.deltaTime)
         {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, step);
+            transform.position = new Vector3(
+                Mathf.Lerp(startX, targetPosition.x, step),
+                transform.position.y,
+                Mathf.Lerp(startZ, targetPosition.z, step));
             yield return null;
         }
 
         transform.position = targetPosition;
+    }
+
+    protected IEnumerator JumpAnimation(float height)
+    {
+        if (!groundYSet)
+        {
+            groundY = transform.position.y;
+            groundYSet = true;
+        }
+
+        for (float step = 0; step < 1; step += 20 * Time.deltaTime)
+        {
+            transform.position = new Vector3(
+                transform.position.x,
+                Mathf.Lerp(groundY, height, step),
+                transform.position.z);
+            yield return null;
+        }
+
+        for (float step = 0; step < 1; step += 20 * Time.deltaTime)
+        {
+            transform.position = new Vector3(
+                transform.position.x,
+                Mathf.Lerp(height, groundY, step),
+                transform.position.z);
+            yield return null;
+        }
+
+        transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
+    }
+
+    [Listen(EventName.GameEnd)]
+    protected virtual void OnGameEnd(EventData eventData)
+    {
+        gameObject.AddComponent<Rigidbody>();
     }
 }

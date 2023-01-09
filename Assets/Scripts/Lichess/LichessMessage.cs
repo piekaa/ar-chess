@@ -13,9 +13,16 @@ public class MessagePayload
     public bool black;
     public bool white;
     public Promotion promotion;
+    public ClockData clock;
 }
 
 public class Promotion
 {
     public string pieceClass;
+}
+
+public class ClockData
+{
+    public float white;
+    public float black;
 }

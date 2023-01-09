@@ -58,7 +58,6 @@ public class PiecesController : MonoBehaviour
             moveNumber++;
         }
 
-        //todo animation
         piece.Move(board.GetPosition(position), moveNumber, Math.Abs(newLine - currentLine), forAnalyze);
 
         piecesPositions.SetIndex(piece, Board.PositionToIndex(position));

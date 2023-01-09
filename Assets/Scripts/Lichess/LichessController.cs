@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,8 @@ public class LichessController : EventListener
     private WebSocket webSocket;
     public bool playingBlack = true;
 
+    private int moveCount = 0;
+    private int moveCountBeforeStart = 0;
 
     public void Connect(string mainPagePath)
     {
@@ -39,9 +42,11 @@ public class LichessController : EventListener
         Debug.Log(initialData.data.url.socket);
         //
 
+        moveCountBeforeStart = initialData.data.steps.Max(step => step.ply);
 
         EventSystem.Fire(EventName.StartGame,
-            new EventData(initialData.data.player.color == InitialDataColor.white ? "white" : "black"));
+            new EventData(initialData.data.player.color == InitialDataColor.white ? "white" : "black",
+                initialData.data.clock));
 
         webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
             initialData.data.url.socket + "?sri=CVZEVKrY9Fry&v=0", cookie);
@@ -72,28 +77,41 @@ public class LichessController : EventListener
 
                 if (textMessage.Text.StartsWith("{"))
                 {
-                    try
+                    // try
                     {
                         var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
-                        if (lichessMessage.t == "move" && lichessMessage.v % 2 == (playingBlack ? 0 : 1))
+
+                        if (lichessMessage.t == "move")
                         {
-                            FixCastleMove(lichessMessage);
-                            FixPromotionMove(lichessMessage);
                             Debug.Log(lichessMessage.d.uci);
-                            EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
+                            if (lichessMessage.v % 2 == (playingBlack ? 0 : 1) || moveCount < moveCountBeforeStart)
+                            {
+                                FixCastleMove(lichessMessage);
+                                FixPromotionMove(lichessMessage);
+                                
+                                EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
+
+                                if (lichessMessage.d.clock != null)
+                                {
+                                    EventSystem.Fire(EventName.ClockUpdate, new EventData(lichessMessage.d.clock));
+                                }
+                            }
+                            moveCount++;
                         }
+
+
                         if (lichessMessage.t == "endData")
                         {
                             Debug.Log(lichessMessage.d.winner);
                             EventSystem.Fire(EventName.GameEnd, new EventData(lichessMessage.d.winner));
                         }
                     }
-                    catch (Exception e)
-                    {
-                        Debug.Log(e.StackTrace);
-                        Debug.Log("Piekson deserialization exception: " + e.Message + "\n For JSON: \n" +
-                                  textMessage.Text);
-                    }
+                    // catch (Exception e)
+                    // {
+                    //     Debug.Log(e.StackTrace);
+                    //     Debug.Log("Piekson deserialization exception: " + e.Message + "\n For JSON: \n" +
+                    //               textMessage.Text);
+                    // }
                 }
 
                 break;
@@ -149,6 +167,13 @@ public class LichessController : EventListener
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
+        
+        Debug.Log(moveCount);
+        if (moveCount < moveCountBeforeStart)
+        {
+            return;
+        }
+        
         if (StateSystem.Instance.IsWhiteTurn() && playingBlack)
         {
             Debug.Log("Sending: " + eventData.Text.ToLower());

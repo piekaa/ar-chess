@@ -56,7 +56,6 @@ public class PieceMovementController : EventListener
 
         if (pawn != null && secondSquare[1] is '1' or '8')
         {
-            Debug.Log("Doszedl");
             EventSystem.Fire(EventName.StartPromotion, eventData);
         }
         else
@@ -86,7 +85,7 @@ public class PieceMovementController : EventListener
             {
                 piecesController.CapturePiece(toCapture);
             }
-            
+
             piecesController.PromoteToPiece(secondSquare, move[4], pawnToPromote.black);
             CheckChecks();
             return;
@@ -171,6 +170,7 @@ public class PieceMovementController : EventListener
             rookNewPosition = "F1";
         }
 
+        king.nextMoveCastle = true;
         piecesController.MovePiece(king, secondSquare);
         piecesController.MovePiece(rook, rookNewPosition);
     }
@@ -185,6 +185,7 @@ public class PieceMovementController : EventListener
             rookNewPosition = "F8";
         }
 
+        king.nextMoveCastle = true;
         piecesController.MovePiece(king, secondSquare);
         piecesController.MovePiece(rook, rookNewPosition);
     }
