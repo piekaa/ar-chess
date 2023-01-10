@@ -4227,6 +4227,7 @@ GameObject:
   - component: {fileID: 2714376766565876832}
   - component: {fileID: 2142760917493906621}
   - component: {fileID: 3215631342239382400}
+  - component: {fileID: 165946213044753084}
   m_Layer: 0
   m_Name: brzegi
   m_TagString: Untagged
@@ -4299,6 +4300,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &165946213044753084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4052598874601515768}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.31, y: 0, z: 0.31}
+  m_Center: {x: 0, y: 0.022499999, z: 0}
 --- !u!1 &4116089233870520383
 GameObject:
   m_ObjectHideFlags: 0

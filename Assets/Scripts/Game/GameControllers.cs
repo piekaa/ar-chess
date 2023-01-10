@@ -17,7 +17,7 @@ public class GameControllers : EventListener
         }
         else
         {
-            EventSystem.Fire(EventName.StartGame, new EventData("both"));
+            EventSystem.Fire(EventName.StartGame, new EventData("both", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"));
         }
     }
 

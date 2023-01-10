@@ -46,7 +46,7 @@ public class LichessController : EventListener
 
         EventSystem.Fire(EventName.StartGame,
             new EventData(initialData.data.player.color == InitialDataColor.white ? "white" : "black",
-                initialData.data.clock));
+                initialData.data.clock, initialData.data.steps[0].fen));
 
         webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
             initialData.data.url.socket + "?sri=CVZEVKrY9Fry&v=0", cookie);

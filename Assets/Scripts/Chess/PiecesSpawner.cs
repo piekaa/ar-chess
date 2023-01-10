@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PiecesSpawner
 {
@@ -15,47 +16,56 @@ public class PiecesSpawner
         this.piecesPositions = piecesPositions;
     }
 
-    public void SpawnPiecesAtBeginningPositions()
+    public void SpawnPieces(string fen)
     {
-        for (int i = 8; i < 16; i++)
+        var piecesByLetters = new Dictionary<char, Piece>()
         {
-            Instantiate(whitePieces.Pawn, i);
-        }
+            { 'r', blackPieces.Rook },
+            { 'n', blackPieces.Knight },
+            { 'b', blackPieces.Bishop },
+            { 'q', blackPieces.Queen },
+            { 'k', blackPieces.King },
+            { 'p', blackPieces.Pawn },
 
-        Instantiate(whitePieces.Rook, "A1");
-        Instantiate(whitePieces.Rook, "H1");
+            { 'R', whitePieces.Rook },
+            { 'N', whitePieces.Knight },
+            { 'B', whitePieces.Bishop },
+            { 'Q', whitePieces.Queen },
+            { 'K', whitePieces.King },
+            { 'P', whitePieces.Pawn },
+        };
 
-        InstantiateRotated180(whitePieces.Knight, "B1");
-        InstantiateRotated180(whitePieces.Knight, "G1");
+        var parts = fen.Split(" ");
 
-        Instantiate(whitePieces.Bishop, "C1");
-        Instantiate(whitePieces.Bishop, "F1");
+        var ranks = parts[0];
+        var ranksIndex = 0;
 
-        Instantiate(whitePieces.Queen, "D1");
-        Instantiate(whitePieces.King, "E1");
-
-        for (int i = 8 * 6; i < 8 * 7; i++)
+        var fenIndexer = new FenIndexer();
+        
+        foreach (var placementInfo in ranks.ToCharArray())
         {
-            Instantiate(blackPieces.Pawn, i, true);
+            if (placementInfo == '/')
+            {
+                continue;
+            }
+
+            if (char.IsDigit(placementInfo))
+            {
+                for (int i = 0; i < placementInfo - '0'; i++)
+                {
+                    fenIndexer.Next();
+                }
+                continue;
+            }
+
+            Instantiate(piecesByLetters[placementInfo], fenIndexer.Next(), char.IsLower(placementInfo));
         }
-
-        Instantiate(blackPieces.Rook, "A8", true);
-        Instantiate(blackPieces.Rook, "H8" ,true);
-
-        Instantiate(blackPieces.Knight, "B8", true);
-        Instantiate(blackPieces.Knight, "G8", true);
-
-        Instantiate(blackPieces.Bishop, "C8", true);
-        Instantiate(blackPieces.Bishop, "F8", true);
-
-        Instantiate(blackPieces.Queen, "D8", true);
-        Instantiate(blackPieces.King, "E8", true);
     }
 
     public void SpawnPiece(string position, char pieceType, bool black)
     {
         var piecesDeck = black ? blackPieces : whitePieces;
-        
+
         switch (pieceType)
         {
             case 'Q':
@@ -72,24 +82,17 @@ public class PiecesSpawner
                 break;
         }
     }
-    
+
     private void Instantiate(Piece piece, int index, bool black = false)
     {
         Instantiate(piece, Board.IndexToPosition(index), black);
     }
 
+
     private void Instantiate(Piece piece, string position, bool black = false)
     {
-        var p = Object.Instantiate(piece, board.GetPosition(position), Quaternion.identity);
-        p.black = black;
-        p.position = position;
-        piecesPositions.AddNewPiece(p, Board.PositionToIndex(position));
-    }
-
-    private void InstantiateRotated180(Piece piece, string position, bool black = false)
-    {
         var p = Object.Instantiate(piece, board.GetPosition(position),
-            Quaternion.Euler(0, 180, 0));
+            Quaternion.Euler(0, black ? 0 : 180, 0));
         p.black = black;
         p.position = position;
         piecesPositions.AddNewPiece(p, Board.PositionToIndex(position));

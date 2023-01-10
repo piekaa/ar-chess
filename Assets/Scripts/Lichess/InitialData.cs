@@ -40,4 +40,5 @@ public class InitialDataUrl
 public class InitialDataStep
 {
     public int ply;
+    public string fen;
 }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 //todo rename
-public class PiecesController : MonoBehaviour
+public class PiecesController : EventListener
 {
     [SerializeField] private Pieces whitePieces;
 
@@ -13,7 +12,7 @@ public class PiecesController : MonoBehaviour
     [SerializeField] private Board board;
 
     private PiecesSpawner spawner;
-    
+
     private PiecesPositions piecesPositions = new();
 
     private int capturedBlack;
@@ -23,10 +22,11 @@ public class PiecesController : MonoBehaviour
 
     public int MoveNumber => moveNumber;
 
-    private void Start()
+    [Listen(EventName.StartGame)]
+    private void SpawnPieces(EventData eventData)
     {
         spawner = new PiecesSpawner(whitePieces, blackPieces, board, piecesPositions);
-        spawner.SpawnPiecesAtBeginningPositions();
+        spawner.SpawnPieces(eventData.Fen);
     }
 
     public int GetPiecePositionIndex(Piece piece)
@@ -66,7 +66,7 @@ public class PiecesController : MonoBehaviour
         {
             piece.Deselect();
         }
-        
+
         piece.position = position;
     }
 
@@ -77,9 +77,9 @@ public class PiecesController : MonoBehaviour
             //todo animation
             piece.transform.position = piece.black
                 ? board.CaptureSpotWhite(capturedBlack++)
-                : board.CaptureSpotBlack(capturedWhite++);    
+                : board.CaptureSpotBlack(capturedWhite++);
         }
-        
+
         piece.position = "xx";
         piecesPositions.SetIndex(piece, -1);
     }
