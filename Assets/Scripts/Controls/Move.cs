@@ -41,9 +41,12 @@ public class Move : MonoBehaviour
     private float defaultY;
 
     private bool lockMouse = true;
-    
+
+    private int frameCount = 0;
+
     void Update()
     {
+        frameCount++;
         
         if (Input.GetKey("w"))
         {
@@ -88,7 +91,7 @@ public class Move : MonoBehaviour
 
         if (lockMouse)
         {
-            if (Time.frameCount > 10)
+            if (frameCount > 10)
             {
 
                 var dx = Input.mousePosition.x - defaultX;
@@ -102,7 +105,7 @@ public class Move : MonoBehaviour
             }
             Win32.SetCursorPos(500, 500);
 
-            if (Time.frameCount == 5)
+            if (frameCount == 5)
             {
                 defaultX = Input.mousePosition.x;
                 defaultY = Input.mousePosition.y;

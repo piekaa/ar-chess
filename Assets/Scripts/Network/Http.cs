@@ -67,12 +67,14 @@ public class Http
         return response;
     }
 
-    public static string PostMultipartAndGetCookie(string host, string path, Dictionary<string, string> body)
+    public static (int, string) PostMultipartAndGetCookie(string host, string path, Dictionary<string, string> body)
     {
         string server = host;
         TcpClient client = new TcpClient(server, 443);
 
         var cookie = "";
+
+        var status = 0;
 
         using (SslStream sslStream = new SslStream(client.GetStream(), false,
                    ValidateServerCertificate, null))
@@ -125,7 +127,17 @@ public class Http
 
             var responseString = ReadResponseHeaders(sslStream);
 
+            status = int.Parse(responseString.Split(" ")[1]);
+
+            
             Debug.Log(responseString);
+            
+            if (status != 200)
+            {
+                return (status, responseString);
+            }
+
+          
 
             var cookieStartIndex = responseString.IndexOf("Set-Cookie: ", StringComparison.CurrentCulture) + 12;
             var cookieEndIndex = responseString.IndexOf("; Max-Age", StringComparison.CurrentCulture);
@@ -135,7 +147,7 @@ public class Http
         }
 
         client.Close();
-        return cookie;
+        return (status, cookie);
     }
 
     public static string ReadResponseHeaders(SslStream sslStream)

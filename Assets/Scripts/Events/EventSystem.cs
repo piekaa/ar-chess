@@ -20,7 +20,7 @@ public class EventData
     public readonly Piece Piece;
     public readonly BoardSquare BoardSquare;
     public readonly string Text;
-    public readonly string Fen;
+    public readonly Fen Fen;
     public readonly State OldState;
     public readonly State NewState;
     public readonly ClockData ClockData;
@@ -35,13 +35,13 @@ public class EventData
         Text = text;
     }
 
-    public EventData(string text, string fen)
+    public EventData(string text, Fen fen)
     {
         Text = text;
         Fen = fen;
     }
 
-    public EventData(string text, ClockData clockData, string fen)
+    public EventData(string text, ClockData clockData, Fen fen)
     {
         Text = text;
         ClockData = clockData;

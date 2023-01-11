@@ -7,23 +7,20 @@ using UnityEngine.AI;
 
 public class LichessController : EventListener
 {
+    public LoginData LoginData;
+
     private WebSocket webSocket;
     public bool playingBlack = true;
 
     private int moveCount = 0;
+
+
+    // todo after some time those moves are not sent through web socket, handle it from fen steps
     private int moveCountBeforeStart = 0;
 
     public void Connect(string mainPagePath)
     {
-        var cookie = Http.PostMultipartAndGetCookie("lichess.org", "/login", new Dictionary<string, string>
-        {
-            { "username", "piekoszekdev" },
-            { "password", "piekoszek" },
-            { "remember", "true" },
-            { "token", "" },
-        }).Trim();
-
-        var initialHtml = Http.Get("lichess.org", mainPagePath, cookie);
+        var initialHtml = Http.Get("lichess.org", mainPagePath, LoginData.cookie);
 
         var jsonStart = initialHtml.IndexOf("{LichessRound.boot(") + "{LichessRound.boot(".Length;
         var jsonEnd = initialHtml.IndexOf("})</script></body></html>") - 1;
@@ -46,10 +43,10 @@ public class LichessController : EventListener
 
         EventSystem.Fire(EventName.StartGame,
             new EventData(initialData.data.player.color == InitialDataColor.white ? "white" : "black",
-                initialData.data.clock, initialData.data.steps[0].fen));
+                initialData.data.clock, new Fen(initialData.data.steps[0].fen)));
 
         webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
-            initialData.data.url.socket + "?sri=CVZEVKrY9Fry&v=0", cookie);
+            initialData.data.url.socket + "?sri=CVZEVKrY9Fry&v=0", LoginData.cookie);
         StartCoroutine(SendNulls());
     }
 
@@ -88,7 +85,7 @@ public class LichessController : EventListener
                             {
                                 FixCastleMove(lichessMessage);
                                 FixPromotionMove(lichessMessage);
-                                
+
                                 EventSystem.Fire(EventName.Move, new EventData(lichessMessage.d.uci));
 
                                 if (lichessMessage.d.clock != null)
@@ -96,6 +93,7 @@ public class LichessController : EventListener
                                     EventSystem.Fire(EventName.ClockUpdate, new EventData(lichessMessage.d.clock));
                                 }
                             }
+
                             moveCount++;
                         }
 
@@ -167,13 +165,12 @@ public class LichessController : EventListener
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
-        
         Debug.Log(moveCount);
         if (moveCount < moveCountBeforeStart)
         {
             return;
         }
-        
+
         if (StateSystem.Instance.IsWhiteTurn() && playingBlack)
         {
             Debug.Log("Sending: " + eventData.Text.ToLower());

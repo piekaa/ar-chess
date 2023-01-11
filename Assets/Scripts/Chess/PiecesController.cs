@@ -74,10 +74,9 @@ public class PiecesController : EventListener
     {
         if (!forAnalyze)
         {
-            //todo animation
-            piece.transform.position = piece.black
+            piece.CaptureMove(piece.black
                 ? board.CaptureSpotWhite(capturedBlack++)
-                : board.CaptureSpotBlack(capturedWhite++);
+                : board.CaptureSpotBlack(capturedWhite++));
         }
 
         piece.position = "xx";

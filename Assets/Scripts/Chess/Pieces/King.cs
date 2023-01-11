@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//todo KING CANNOT MOVE!
+
 public class King : Piece
 {
 

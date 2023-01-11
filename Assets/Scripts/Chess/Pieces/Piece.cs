@@ -23,6 +23,19 @@ public abstract class Piece : Selectable
 
     private VisualChanger visualChanger;
 
+    private bool captured;
+
+    private Vector3 pos
+    {
+        set
+        {
+            if (!captured)
+            {
+                transform.position = value;    
+            }
+        }
+    }
+    
     private void Awake()
     {
         visualChanger = GetComponent<VisualChanger>();
@@ -74,6 +87,12 @@ public abstract class Piece : Selectable
         moved = !forAnalyze;
     }
 
+    public void CaptureMove(Vector3 position)
+    {
+        transform.position = position;
+        captured = true;
+    }
+
     protected virtual void StartMoveAnimation(Vector3 targetPosition)
     {
         StartCoroutine(MoveAnimation(targetPosition));
@@ -86,14 +105,14 @@ public abstract class Piece : Selectable
 
         for (float step = 0; step < 1; step += 10 * Time.deltaTime)
         {
-            transform.position = new Vector3(
+            pos = new Vector3(
                 Mathf.Lerp(startX, targetPosition.x, step),
                 transform.position.y,
                 Mathf.Lerp(startZ, targetPosition.z, step));
             yield return null;
         }
-
-        transform.position = targetPosition;
+        
+        pos = targetPosition;
     }
 
     protected IEnumerator JumpAnimation(float height)
@@ -106,7 +125,7 @@ public abstract class Piece : Selectable
 
         for (float step = 0; step < 1; step += 20 * Time.deltaTime)
         {
-            transform.position = new Vector3(
+            pos = new Vector3(
                 transform.position.x,
                 Mathf.Lerp(groundY, height, step),
                 transform.position.z);
@@ -115,16 +134,16 @@ public abstract class Piece : Selectable
 
         for (float step = 0; step < 1; step += 20 * Time.deltaTime)
         {
-            transform.position = new Vector3(
+            pos = new Vector3(
                 transform.position.x,
                 Mathf.Lerp(height, groundY, step),
                 transform.position.z);
             yield return null;
         }
 
-        transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
+        pos = new Vector3(transform.position.x, groundY, transform.position.z);
     }
-
+    
     [Listen(EventName.GameEnd)]
     protected virtual void OnGameEnd(EventData eventData)
     {

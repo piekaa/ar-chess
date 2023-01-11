@@ -32,7 +32,7 @@ public class StateSystem : EventListener
     [Listen(EventName.StartGame)]
     private void OnStart(EventData eventData)
     {
-        ChangeState(State.WhiteMove);
+        ChangeState(eventData.Fen.whoseMove == Color.White ? State.WhiteMove : State.BlackMove);
     }
 
     [Listen(EventName.Move)]
@@ -45,7 +45,7 @@ public class StateSystem : EventListener
     {
         return CurrentState is State.WhiteMove or State.WhitePromotion;
     }
-    
+
     public bool IsBlackTurn()
     {
         return CurrentState is State.BlackMove or State.BlackPromotion;

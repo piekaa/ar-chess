@@ -16,7 +16,7 @@ public class PiecesSpawner
         this.piecesPositions = piecesPositions;
     }
 
-    public void SpawnPieces(string fen)
+    public void SpawnPieces(Fen fen)
     {
         var piecesByLetters = new Dictionary<char, Piece>()
         {
@@ -34,21 +34,12 @@ public class PiecesSpawner
             { 'K', whitePieces.King },
             { 'P', whitePieces.Pawn },
         };
-
-        var parts = fen.Split(" ");
-
-        var ranks = parts[0];
-        var ranksIndex = 0;
+        
 
         var fenIndexer = new FenIndexer();
         
-        foreach (var placementInfo in ranks.ToCharArray())
+        foreach (var placementInfo in fen.placements)
         {
-            if (placementInfo == '/')
-            {
-                continue;
-            }
-
             if (char.IsDigit(placementInfo))
             {
                 for (int i = 0; i < placementInfo - '0'; i++)
@@ -57,7 +48,6 @@ public class PiecesSpawner
                 }
                 continue;
             }
-
             Instantiate(piecesByLetters[placementInfo], fenIndexer.Next(), char.IsLower(placementInfo));
         }
     }

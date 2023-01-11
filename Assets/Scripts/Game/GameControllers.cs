@@ -1,23 +1,25 @@
-﻿using System;
-using Unity.Tutorials.Core.Editor;
+﻿using Unity.Tutorials.Core.Editor;
 using UnityEngine;
 
 public class GameControllers : EventListener
 {
+    [SerializeField] private LoginData loginData;
     [SerializeField] private string mainPagePath;
     private LichessController lichessController;
-    
+
     private void Start()
     {
         new GameObject().AddComponent<PlayerController>();
         if (!mainPagePath.IsNullOrWhiteSpace())
         {
             lichessController = new GameObject().AddComponent<LichessController>();
-            lichessController.Connect(mainPagePath);    
+            lichessController.LoginData = loginData;
+            lichessController.Connect(mainPagePath);
         }
         else
         {
-            EventSystem.Fire(EventName.StartGame, new EventData("both", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq"));
+            EventSystem.Fire(EventName.StartGame,
+                new EventData("both", new Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq")));
         }
     }
 
@@ -27,7 +29,6 @@ public class GameControllers : EventListener
         while (transform.childCount > 0)
         {
             Destroy(transform.GetChild(0));
-            
         }
 
         if (eventData.Text == "white")
@@ -53,7 +54,7 @@ public class GameControllers : EventListener
         gameObject.transform.parent = transform;
         if (lichessController != null)
         {
-            lichessController.playingBlack = true;    
+            lichessController.playingBlack = true;
         }
     }
 
@@ -65,7 +66,7 @@ public class GameControllers : EventListener
         gameObject.transform.parent = transform;
         if (lichessController != null)
         {
-            lichessController.playingBlack = false;    
+            lichessController.playingBlack = false;
         }
     }
 }
