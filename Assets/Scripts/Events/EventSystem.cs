@@ -14,6 +14,12 @@ public enum EventName
     ClockUpdate,
     ARSpawn,
     GameFound,
+    
+    ArUiChangeGameType,
+    ArUiGameModeAddTime,
+    ArUiGameModeSubtractTime,
+    ArUiGameModeAddIncrement,
+    ArUiGameModeSubtractIncrement,
 }
 
 public class EventData

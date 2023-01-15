@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 8133477694413410066}
   - component: {fileID: 3624343933871502402}
   - component: {fileID: 2801255608510494667}
-  m_Layer: 0
+  - component: {fileID: 6141091934064507839}
+  - component: {fileID: 8213337246821258498}
+  m_Layer: 11
   m_Name: add-time-button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +85,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6141091934064507839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84547187594752338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69138f0990ea4478902c8afe25fd79de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
+  onClickEvent: 12
+--- !u!65 &8213337246821258498
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 84547187594752338}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.019999996, z: 0.021591011}
+  m_Center: {x: 0.000000059604645, y: 0.000000022351742, z: 0.00079549605}
 --- !u!1 &101899445074609320
 GameObject:
   m_ObjectHideFlags: 0
@@ -963,7 +992,9 @@ GameObject:
   - component: {fileID: 3350123555043448874}
   - component: {fileID: 2084317321340947175}
   - component: {fileID: 1323712859561887508}
-  m_Layer: 0
+  - component: {fileID: 8334260981678440573}
+  - component: {fileID: 1080623860946754933}
+  m_Layer: 11
   m_Name: lower-time-button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1035,6 +1066,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8334260981678440573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883952031874516119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69138f0990ea4478902c8afe25fd79de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
+  onClickEvent: 13
+--- !u!65 &1080623860946754933
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883952031874516119}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.019999998, y: 0.019999994, z: 0.022513513}
+  m_Center: {x: 0, y: 0.000000022351742, z: 0.0012567482}
 --- !u!1 &1887915105304211437
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,7 +1995,9 @@ GameObject:
   - component: {fileID: 6991739040735187949}
   - component: {fileID: 1699012856774172804}
   - component: {fileID: 5189892253769274558}
-  m_Layer: 0
+  - component: {fileID: 2798407563220056433}
+  - component: {fileID: 149252012699340642}
+  m_Layer: 11
   m_Name: Add-increment-button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2009,6 +2069,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2798407563220056433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3278442694676609915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69138f0990ea4478902c8afe25fd79de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
+  onClickEvent: 14
+--- !u!65 &149252012699340642
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3278442694676609915}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.02, y: 0.019999996, z: 0.021591011}
+  m_Center: {x: 0.000000059604645, y: -0.000000014901161, z: 0.0007954998}
 --- !u!1 &3335756029489611988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2994,7 +3081,9 @@ GameObject:
   - component: {fileID: 4768834021004416760}
   - component: {fileID: 3400472118177773419}
   - component: {fileID: 1889640429020265873}
-  m_Layer: 0
+  - component: {fileID: 3977839112502467838}
+  - component: {fileID: 3042885990071784789}
+  m_Layer: 11
   m_Name: lower-increment-button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3066,6 +3155,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3977839112502467838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4637778893330915449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69138f0990ea4478902c8afe25fd79de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
+  onClickEvent: 15
+--- !u!65 &3042885990071784789
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4637778893330915449}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.019999998, y: 0.019999994, z: 0.022513513}
+  m_Center: {x: 0, y: -0.000000014901161, z: 0.001256752}
 --- !u!1 &4814998664634476786
 GameObject:
   m_ObjectHideFlags: 0
@@ -3496,6 +3612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animation: {fileID: 11400000, guid: d90b32429021569488094d0b4471ac23, type: 2}
+  onClickEvent: 11
 --- !u!65 &619516898750616372
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3604,6 +3721,7 @@ GameObject:
   - component: {fileID: 8546869777261424747}
   - component: {fileID: 5870551578450101409}
   - component: {fileID: 1799810154351450167}
+  - component: {fileID: 4996611813413601751}
   m_Layer: 0
   m_Name: clock
   m_TagString: Untagged
@@ -3712,6 +3830,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   white: {fileID: 8778440690865859937}
   black: {fileID: 2281248180570525111}
+--- !u!114 &4996611813413601751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5366214872160740724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bad10f9dde504e18bcaa93f5394f94d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: {fileID: 2281248180570525111}
+  increment: {fileID: 8778440690865859937}
+  pvp: {fileID: 1440627207116962607}
+  friend: {fileID: 1305508470804344452}
+  stockfish: {fileID: 5528696349581704452}
+  digitMaterials: {fileID: 11400000, guid: e3955a40c8d479748b83433dcead4951, type: 2}
 --- !u!1 &5413173489356916156
 GameObject:
   m_ObjectHideFlags: 0

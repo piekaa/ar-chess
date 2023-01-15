@@ -11,18 +11,24 @@ public class PushAnimation : Animation
 
     public override void StartAnimation(GameObject gameObject)
     {
+        if (animationDataByGameObject.ContainsKey(gameObject))
+        {
+            var previousAnimation = animationDataByGameObject[gameObject];
+            GetEmpty(gameObject).StopCoroutine(previousAnimation.runningAnimation);
+            SetInitialPosition(gameObject);
+        }
+
         var initialPosition = gameObject.transform.position;
-        var targetPosition = initialPosition - new Vector3(0,1,0) * depth;
+        var targetPosition = initialPosition - new Vector3(0, 1, 0) * depth;
         var runningAnimation = GetEmpty(gameObject).StartCoroutine(Animation(gameObject));
-        animationDataByGameObject[gameObject] = 
+        animationDataByGameObject[gameObject] =
             new PushAnimationData(initialPosition, targetPosition, runningAnimation);
     }
 
     private IEnumerator Animation(GameObject gameObject)
     {
-
         yield return null;
-        
+
         var initialPosition = animationDataByGameObject[gameObject].initialPosition;
         var targetPosition = animationDataByGameObject[gameObject].targetPosition;
 
