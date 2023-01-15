@@ -12,6 +12,8 @@ public enum EventName
     StartPromotion,
     GameEnd,
     ClockUpdate,
+    ARSpawn,
+    GameFound,
 }
 
 public class EventData
@@ -24,6 +26,9 @@ public class EventData
     public readonly State OldState;
     public readonly State NewState;
     public readonly ClockData ClockData;
+
+    public readonly Vector3 Position;
+    public readonly Quaternion Rotation;
 
     public EventData(GameObject gameObject)
     {
@@ -68,6 +73,12 @@ public class EventData
     public EventData(ClockData clockData)
     {
         ClockData = clockData;
+    }
+
+    public EventData(Vector3 position, Quaternion rotation)
+    {
+        Position = position;
+        Rotation = rotation;
     }
 }
 

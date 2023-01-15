@@ -1,32 +1,38 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum State
 {
     Initial,
-    WaitingForGameToStart,
     WhiteMove,
     BlackMove,
     WhitePromotion,
     BlackPromotion,
+    ArUi,
 }
 
 
 public class StateSystem : EventListener
 {
-    public static StateSystem Instance { get; private set; }
+    private static StateSystem instance;
 
-    private void Awake()
+    public static StateSystem Instance
     {
-        Instance = this;
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<StateSystem>();
+            }
+            return instance;
+        }
     }
-
+    
     public State CurrentState { get; private set; } = State.Initial;
 
-
-    private void Start()
+    [Listen(EventName.ARSpawn)]
+    private void StartArUi(EventData eventData)
     {
-        ChangeState(State.WaitingForGameToStart);
+        ChangeState(State.ArUi);
     }
 
     [Listen(EventName.StartGame)]
@@ -67,6 +73,6 @@ public class StateSystem : EventListener
     private void LogState(EventData eventData)
     {
         CurrentState = eventData.NewState;
-        // Debug.Log("New state: " + eventData.NewState);
+        Debug.Log("New state: " + eventData.NewState);
     }
 }

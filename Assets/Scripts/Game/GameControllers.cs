@@ -1,26 +1,17 @@
-﻿using Unity.Tutorials.Core.Editor;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameControllers : EventListener
 {
     [SerializeField] private LoginData loginData;
-    [SerializeField] private string mainPagePath;
     private LichessController lichessController;
 
-    private void Start()
+    [Listen(EventName.GameFound)]
+    private void Connect(EventData eventData)
     {
         new GameObject().AddComponent<PlayerController>();
-        if (!mainPagePath.IsNullOrWhiteSpace())
-        {
-            lichessController = new GameObject().AddComponent<LichessController>();
-            lichessController.LoginData = loginData;
-            lichessController.Connect(mainPagePath);
-        }
-        else
-        {
-            EventSystem.Fire(EventName.StartGame,
-                new EventData("both", new Fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq")));
-        }
+        lichessController = new GameObject().AddComponent<LichessController>();
+        lichessController.LoginData = loginData;
+        lichessController.Connect(eventData.Text);
     }
 
     [Listen(EventName.StartGame)]

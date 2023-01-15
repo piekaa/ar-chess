@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
@@ -40,24 +40,15 @@ public class Http
 
             sslStream.Write(Encoding.ASCII.GetBytes(requestHeaders));
 
-            var responseHeaders = ReadResponseHeaders(sslStream);
+            var (status, responseHeaders) = ReadResponseLineAndHeaders(sslStream);
 
-            Debug.Log(responseHeaders);
-            
-            var contentLengthPosition = responseHeaders.IndexOf("Content-Length: ") + "Content-Length: ".Length;
-            var contentLengthString = "";
+            Debug.Log((status, responseHeaders));
 
 
-            for (var i = contentLengthPosition; Char.IsNumber(responseHeaders[i]); i++)
-            {
-                contentLengthString += responseHeaders[i];
-            }
+            var contentLength = int.Parse(responseHeaders["Content-Length"]);
 
-            var contentLength = int.Parse(contentLengthString);
-
-            
             Debug.Log(contentLength);
-            
+
             for (int i = 0; i < contentLength; i++)
             {
                 response += (char)sslStream.ReadByte();
@@ -66,6 +57,69 @@ public class Http
 
         return response;
     }
+
+
+    public static (int, Dictionary<string, string>) PostMultipart(string host, string path, string cookie,
+        Dictionary<string, string> body)
+    {
+        string server = host;
+        TcpClient client = new TcpClient(server, 443);
+
+        using (SslStream sslStream = new SslStream(client.GetStream(), false,
+                   ValidateServerCertificate, null))
+        {
+            sslStream.AuthenticateAsClient(server);
+
+            var loginBody = "";
+
+            foreach (var (name, value) in body)
+            {
+                loginBody += "-----------------------------13544320162248662364810109147\r\n" +
+                             "Content-Disposition: form-data; name=\"" + name + "\"\r\n" +
+                             "\r\n" +
+                             value + "\r\n";
+            }
+
+            loginBody += "-----------------------------13544320162248662364810109147--\r\n";
+
+            var loginHeaders =
+                "POST " + path + " HTTP/1.1\r\n" +
+                "Host: " + host + "\r\n" +
+                "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0\r\n" +
+                "Accept: */*\r\n" +
+                "Accept-Language: en-US,en;q=0.5\r\n" +
+                "Accept-Encoding: gzip, deflate, br\r\n" +
+                "X-Requested-With: XMLHttpRequest\r\n" +
+                "Cookie: " + cookie + "\r\n" +
+                "Content-Type: multipart/form-data; boundary=---------------------------13544320162248662364810109147\r\n" +
+                "Content-Length: " + loginBody.Length + "\r\n" +
+                "Origin: https://" + host + "\r\n" +
+                "Connection: keep-alive\r\n" +
+                "Sec-Fetch-Dest: empty\r\n" +
+                "Sec-Fetch-Mode: cors\r\n" +
+                "Sec-Fetch-Site: same-origin\r\n" +
+                "Pragma: no-cache\r\n" +
+                "Cache-Control: no-cache\r\n" +
+                "TE: trailers\r\n\r\n";
+
+            var requestHeadersBytes = Encoding.ASCII.GetBytes(loginHeaders);
+            var requestBodyBytes = Encoding.ASCII.GetBytes(loginBody);
+
+
+            Debug.Log(requestBodyBytes.Length);
+
+            // Debug.Log(string.Join(" ", requestBytes));
+
+
+            sslStream.Write(requestHeadersBytes);
+            sslStream.Write(requestBodyBytes);
+            
+            var response = ReadResponseLineAndHeaders(sslStream);
+            client.Close();
+            return response;
+        }
+    }
+
 
     public static (int, string) PostMultipartAndGetCookie(string host, string path, Dictionary<string, string> body)
     {
@@ -125,32 +179,24 @@ public class Http
             sslStream.Write(requestBodyBytes);
 
 
-            var responseString = ReadResponseHeaders(sslStream);
+            var (responseStatus, responseHeaders) = ReadResponseLineAndHeaders(sslStream);
+            status = responseStatus;
 
-            status = int.Parse(responseString.Split(" ")[1]);
-
-            
-            Debug.Log(responseString);
-            
             if (status != 200)
             {
-                return (status, responseString);
+                return (status, "");
             }
 
-          
+            var cookieValue = responseHeaders["Set-Cookie"];
 
-            var cookieStartIndex = responseString.IndexOf("Set-Cookie: ", StringComparison.CurrentCulture) + 12;
-            var cookieEndIndex = responseString.IndexOf("; Max-Age", StringComparison.CurrentCulture);
-
-
-            cookie = responseString.Substring(cookieStartIndex, cookieEndIndex - cookieStartIndex);
+            cookie = cookieValue.Split("; Max-Age")[0];
         }
 
         client.Close();
         return (status, cookie);
     }
 
-    public static string ReadResponseHeaders(SslStream sslStream)
+    public static (int, Dictionary<string, string>) ReadResponseLineAndHeaders(SslStream sslStream)
     {
         List<int> response = new List<int>();
 
@@ -171,7 +217,23 @@ public class Http
         }
 
 
-        return responseString;
+        Debug.Log(responseString);
+
+
+        var lines = responseString.Split("\r\n").Where(line => line != "").ToArray();
+
+        var headerLines = lines.Skip(1);
+
+        var headers = new Dictionary<string, string>();
+
+        foreach (var header in headerLines)
+        {
+            var nameAndValue = header.Split(": ", 2);
+
+            headers[nameAndValue[0]] = nameAndValue[1];
+        }
+
+        return (int.Parse(lines[0].Split(" ")[1]), headers);
     }
 
 

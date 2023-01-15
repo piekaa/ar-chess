@@ -9,8 +9,8 @@ public class Board : EventListener
     [SerializeField] private GameObject FirstCaptureSpotWhite;
 
     [SerializeField] private GameObject FirstCaptureSpotBlack;
-    
-    [SerializeField][Range(0.002f, 0.2f)] private float spaceBetweenCaptured = 0.25f;
+
+    [SerializeField] [Range(0.002f, 0.2f)] private float spaceBetweenCaptured = 0.25f;
 
     private Dictionary<string, BoardSquare> squaresByPosition = new();
 
@@ -21,10 +21,18 @@ public class Board : EventListener
 
     private void Awake()
     {
+        transform.position = new Vector3(10000000000, 1000000000, 100000000000);
         for (var i = 0; i < squares.Length; i++)
         {
             squaresByPosition[squares[i].name] = squares[i];
         }
+    }
+
+    [Listen(EventName.ARSpawn)]
+    private void OnSpawn(EventData eventData)
+    {
+        transform.position = eventData.Position;
+        transform.rotation = eventData.Rotation;
     }
 
     public Vector3 GetPosition(int index)
@@ -41,7 +49,7 @@ public class Board : EventListener
     {
         return FirstCaptureSpotWhite.transform.position + new Vector3(spaceBetweenCaptured * n, 0);
     }
-    
+
     public Vector3 CaptureSpotBlack(int n) // todo rename n
     {
         return FirstCaptureSpotBlack.transform.position - new Vector3(spaceBetweenCaptured * n, 0);
@@ -86,7 +94,7 @@ public class Board : EventListener
     {
         return IndexToPosition(XYToIndex(xy));
     }
-    
+
     public static int XYToIndex(Tuple<int, int> xy)
     {
         return xy.Item1 + xy.Item2 * 8;
@@ -128,13 +136,13 @@ public class Board : EventListener
         var move = eventData.Text.ToUpper();
         var firstSquare = move[..2];
         var secondSquare = move.Substring(2, 2);
-     
+
         lastMoveSquareFrom?.HideLastMove();
         lastMoveSquareTo?.HideLastMove();
 
         lastMoveSquareFrom = squares[PositionToIndex(firstSquare)];
         lastMoveSquareTo = squares[PositionToIndex(secondSquare)];
-        
+
         lastMoveSquareFrom.ShowLastMove();
         lastMoveSquareTo.ShowLastMove();
     }

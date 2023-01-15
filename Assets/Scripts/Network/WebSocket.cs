@@ -38,7 +38,7 @@ public class WebSocket
 
         sslStream.Write(webSocketUpgradeRequestBytes);
 
-        Debug.Log(Http.ReadResponseHeaders(sslStream));
+        Debug.Log(Http.ReadResponseLineAndHeaders(sslStream));
 
         new Thread(() =>
         {
