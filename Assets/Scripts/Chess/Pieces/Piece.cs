@@ -14,6 +14,7 @@ public abstract class Piece : Selectable
     private float groundY;
     private bool groundYSet;
 
+    public bool Captured { get; private set; }
 
     public int LastMoveNumber => lastMoveNumber;
 
@@ -23,19 +24,18 @@ public abstract class Piece : Selectable
 
     private VisualChanger visualChanger;
 
-    private bool captured;
 
     private Vector3 pos
     {
         set
         {
-            if (!captured)
+            if (!Captured)
             {
-                transform.position = value;    
+                transform.position = value;
             }
         }
     }
-    
+
     private void Awake()
     {
         visualChanger = GetComponent<VisualChanger>();
@@ -90,7 +90,7 @@ public abstract class Piece : Selectable
     public void CaptureMove(Vector3 position)
     {
         transform.position = position;
-        captured = true;
+        Captured = true;
     }
 
     protected virtual void StartMoveAnimation(Vector3 targetPosition)
@@ -111,7 +111,7 @@ public abstract class Piece : Selectable
                 Mathf.Lerp(startZ, targetPosition.z, step));
             yield return null;
         }
-        
+
         pos = targetPosition;
     }
 
@@ -143,7 +143,7 @@ public abstract class Piece : Selectable
 
         pos = new Vector3(transform.position.x, groundY, transform.position.z);
     }
-    
+
     [Listen(EventName.GameEnd)]
     protected virtual void OnGameEnd(EventData eventData)
     {

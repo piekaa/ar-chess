@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public enum State
 {
@@ -41,6 +42,12 @@ public class StateSystem : EventListener
         ChangeState(eventData.Fen.whoseMove == Color.White ? State.WhiteMove : State.BlackMove);
     }
 
+    [Listen(EventName.GameEnd)]
+    private void OnEnd(EventData eventData)
+    {
+        ChangeState(State.ArUi);
+    }
+
     [Listen(EventName.Move)]
     private void OnMove(EventData eventData)
     {
@@ -66,7 +73,7 @@ public class StateSystem : EventListener
     private void ChangeState(State newState, string eventText = "")
     {
         var oldState = CurrentState;
-        EventSystem.Fire(EventName.StateChange, new EventData(oldState, newState, eventText));
+        EventSystem.Instance.Fire(EventName.StateChange, new EventData(oldState, newState, eventText));
     }
 
     [Listen(EventName.StateChange)]

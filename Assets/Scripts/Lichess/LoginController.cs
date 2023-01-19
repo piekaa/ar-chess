@@ -12,6 +12,7 @@ public class LoginController : MonoBehaviour
     
     public void Login()
     {
+        //todo in thread
         var (status, cookie) = Http.PostMultipartAndGetCookie("lichess.org", "/login", new Dictionary<string, string>
         {
             { "username", login.text },

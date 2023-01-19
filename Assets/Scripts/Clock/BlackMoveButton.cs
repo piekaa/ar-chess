@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class ClockButton : Selectable
+[MyState(State.BlackMove)]
+public class BlackMoveButton : Selectable
 {
     [SerializeField] private Animation animation;
     [SerializeField] private EventName onClickEvent;

@@ -7,6 +7,6 @@ public class WhiteSelector : Selector
 {
     protected override int LayerMask()
     {
-         return 0b11 << 7;
+         return Layers.White | Layers.Square | Layers.ArUi;
     }   
 }

@@ -18,6 +18,12 @@ public class Clock : EventListener
         SynchronizeClocks(eventData.ClockData);
     }
 
+    [Listen(EventName.GameEnd)]
+    private void StopClock(EventData eventData)
+    {
+        moveCount = 0;
+    }
+
     [Listen(EventName.ClockUpdate)]
     private void UpdateClock(EventData eventData)
     {
@@ -36,6 +42,7 @@ public class Clock : EventListener
         {
             return;
         }
+
         whiteTime = clockData.white;
         blackTime = clockData.black;
         UpdateClockDisplay();
@@ -57,7 +64,7 @@ public class Clock : EventListener
         {
             blackTime -= Time.deltaTime;
         }
-        
+
         UpdateClockDisplay();
     }
 
@@ -65,5 +72,14 @@ public class Clock : EventListener
     {
         white.seconds = (int)whiteTime;
         black.seconds = (int)blackTime;
+    }
+
+    [Listen(EventName.ArUiSmallButtonClick)]
+    private void Surrender(EventData eventData)
+    {
+        if (moveCount > 0)
+        {
+            EventSystem.Instance.Fire(EventName.Surrender, new EventData());
+        }
     }
 }

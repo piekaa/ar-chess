@@ -3,12 +3,22 @@
     public string t;
     public int v;
     public MessagePayload d;
+
+    public LichessMessage()
+    {
+    }
+
+    public LichessMessage(string t)
+    {
+        this.t = t;
+    }
 }
 
 public class MessagePayload
 {
     public string uci;
     public string san;
+    public string url;
     public string winner;
     public bool black;
     public bool white;

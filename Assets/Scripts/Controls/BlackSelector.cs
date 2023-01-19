@@ -3,6 +3,6 @@ public class BlackSelector : Selector
 {
     protected override int LayerMask()
     {
-        return 0b101 << 6;
+        return Layers.Black | Layers.Square | Layers.ArUi;
     }
 }

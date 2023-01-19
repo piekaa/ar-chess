@@ -39,7 +39,7 @@ public class PieceMovementController : EventListener
             return;
         }
 
-        EventSystem.Fire(EventName.Move,
+        EventSystem.Instance.Fire(EventName.Move,
             new EventData((lastPromotionMove + toPromote.pieceFirstLetter).ToUpper()));
     }
 
@@ -56,11 +56,11 @@ public class PieceMovementController : EventListener
 
         if (pawn != null && secondSquare[1] is '1' or '8')
         {
-            EventSystem.Fire(EventName.StartPromotion, eventData);
+            EventSystem.Instance.Fire(EventName.StartPromotion, eventData);
         }
         else
         {
-            EventSystem.Fire(EventName.Move, eventData);
+            EventSystem.Instance.Fire(EventName.Move, eventData);
         }
     }
 

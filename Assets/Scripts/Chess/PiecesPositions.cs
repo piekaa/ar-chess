@@ -9,6 +9,14 @@ public class PiecesPositions
     private Dictionary<Piece, int> savedIndexesByPiece = new();
 
 
+    public void Clear()
+    {
+        piecesByIndex = new();
+        indexesByPiece = new();
+        savedPiecesByIndex = new();
+        savedIndexesByPiece = new();
+    }
+
     public void Save()
     {
         savedPiecesByIndex = new();

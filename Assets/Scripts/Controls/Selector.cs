@@ -34,16 +34,16 @@ public abstract class Selector : EventListener
                 lastSelected?.Select();
 
                 var piece = lastSelected?.GetComponent<Piece>();
-                if (piece != null)
+                if (piece != null && !piece.Captured)
                 {
                     GameInfo.SelectedPiece = piece;
-                    EventSystem.Fire(EventName.SelectedPiece, new EventData(piece.gameObject));
+                    EventSystem.Instance.Fire(EventName.SelectedPiece, new EventData(piece.gameObject));
                 }
 
                 var square = hit.collider.GetComponent<BoardSquare>();
                 if (square != null && square.Selected)
                 {
-                    EventSystem.Fire(EventName.ChosenSquare, new EventData(square));
+                    EventSystem.Instance.Fire(EventName.ChosenSquare, new EventData(square));
                 }
             }
             else

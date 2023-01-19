@@ -38,7 +38,7 @@ public abstract class EventListener : MonoBehaviour
         if (attributes.Length != 0)
         {
             myState = ((MyState)attributes[0]).State;
-            EventSystem.Register(EventName.StateChange, OnStateChange);
+            EventSystem.Instance.Register(EventName.StateChange, OnStateChange);
             if (myState == StateSystem.Instance.CurrentState)
             {
                 active = true;
@@ -56,7 +56,7 @@ public abstract class EventListener : MonoBehaviour
         UnregisterEvents();
         if (myState != null)
         {
-            EventSystem.Unregister(EventName.StateChange, OnStateChange);    
+            EventSystem.Instance?.Unregister(EventName.StateChange, OnStateChange);    
         }
     }
 
@@ -82,7 +82,7 @@ public abstract class EventListener : MonoBehaviour
             var eventName = ((Listen)listenerMethod.GetCustomAttributes(typeof(Listen), false)[0]).EventName;
             var eventDelegate = (Event)Delegate.CreateDelegate(typeof(Event), this, listenerMethod);
             registeredEvents[eventName] = eventDelegate;
-            EventSystem.Register(eventName, eventDelegate);
+            EventSystem.Instance.Register(eventName, eventDelegate);
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class EventListener : MonoBehaviour
     {
         foreach (var (eventName, eventDelegate) in registeredEvents)
         {
-            EventSystem.Unregister(eventName, eventDelegate);
+            EventSystem.Instance?.Unregister(eventName, eventDelegate);
             
         }
         registeredEvents = new();

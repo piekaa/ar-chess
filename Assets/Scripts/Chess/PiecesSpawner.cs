@@ -18,6 +18,14 @@ public class PiecesSpawner
 
     public void SpawnPieces(Fen fen)
     {
+        
+        foreach (var piece in piecesPositions.GetAllPieces())
+        {
+            Object.Destroy(piece);
+        }
+        
+        piecesPositions.Clear();
+        
         var piecesByLetters = new Dictionary<char, Piece>()
         {
             { 'r', blackPieces.Rook },

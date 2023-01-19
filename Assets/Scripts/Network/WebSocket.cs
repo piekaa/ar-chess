@@ -11,6 +11,11 @@ public class WebSocket
 {
     private SslStream sslStream;
     private ConcurrentQueue<WebSocketMessage> incomingMessages = new();
+    private Thread readThread;
+
+    private bool connected;
+    
+    private Queue<string> messageQueue = new();
 
     public WebSocket(string host, string origin, string path, string cookie)
     {
@@ -32,28 +37,48 @@ public class WebSocket
             "Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits\r\n\r\n";
 
 
-        Debug.Log(webSocketUpgradeRequest);
-        
         var webSocketUpgradeRequestBytes = Encoding.ASCII.GetBytes(webSocketUpgradeRequest);
-
         sslStream.Write(webSocketUpgradeRequestBytes);
 
-        Debug.Log(Http.ReadResponseLineAndHeaders(sslStream));
 
-        new Thread(() =>
+        readThread = new Thread(() =>
         {
+            Debug.Log(Http.ReadResponseLineAndHeaders(sslStream));
+            connected = true;
+            
+            foreach (var message in messageQueue)
+            {
+                Send(message);
+            }
+
             for (;;)
             {
-                var opcode = sslStream.ReadByte() & 0b1111;
-
-                incomingMessages.Enqueue(opcode switch
+                try
                 {
-                    1 => ReadTextMessage(),
-                    9 => ReadPingMessage(),
-                    _ => throw new Exception("Opcode different than 1 and 9 -> " + opcode)
-                });
+                    var opcode = sslStream.ReadByte() & 0b1111;
+                    if (opcode == 1)
+                    {
+                        incomingMessages.Enqueue(ReadTextMessage());
+                    }
+
+                    else if (opcode == 9)
+                    {
+                        var ping = ReadPingMessage();
+                        Send(ping.Payload, 10);
+                    }
+                    else
+                    {
+                        throw new Exception("Opcode different than 1 and 9 -> " + opcode);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e.Message);
+                    break;
+                }
             }
-        }).Start();
+        });
+        readThread.Start();
     }
 
     public WebSocketMessage DequeueMessageOrNull()
@@ -83,36 +108,36 @@ public class WebSocket
             responseString += (char)bytes[i];
         }
 
-
         return responseString;
     }
 
-    private WebSocketMessage ReadPingMessage()
+    private WebScoketPingMessage ReadPingMessage()
     {
         return new WebScoketPingMessage(ReadPayload());
     }
 
     private byte[] ReadPayload()
     {
-        var payloadLength = ReadPayloadLength();
+        var (payloadLength, mask) = ReadPayloadLengthAndMask();
         byte[] payload = new byte[payloadLength];
+
+        var maskIndex = 0;
 
         for (int i = 0; i < payloadLength; i++)
         {
-            payload[i] = (byte)sslStream.ReadByte();
+            payload[i] = (byte)(sslStream.ReadByte() ^ mask[maskIndex]);
+            maskIndex++;
+            maskIndex %= 4;
         }
 
         return payload;
     }
 
-    private int ReadPayloadLength()
+    private (int, byte[]) ReadPayloadLengthAndMask()
     {
         var payloadLengthFirstByte = sslStream.ReadByte();
 
-        if ((payloadLengthFirstByte & 0b10000000) != 0)
-        {
-            throw new Exception("Mask is set");
-        }
+        bool withMask = (payloadLengthFirstByte & 0b10000000) != 0;
 
         var payloadLength = 0;
 
@@ -130,12 +155,31 @@ public class WebSocket
             payloadLength = sslStream.ReadByte() << 8 | sslStream.ReadByte();
         }
 
-        return payloadLength;
+        if (withMask)
+        {
+            var mask = new byte[4];
+            for (int i = 0; i < 4; i++)
+            {
+                mask[i] = (byte)sslStream.ReadByte();
+            }
+
+            return (payloadLength, mask);
+        }
+
+        return (payloadLength, new byte[] { 0, 0, 0, 0 });
     }
 
 
+    
+
     public void Send(string message)
     {
+        if (!connected)
+        {
+            messageQueue.Enqueue(message);
+            return;
+        }
+
         sslStream.Write(new byte[] { 0b10000001 });
 
         var bytes = Encoding.ASCII.GetBytes(message);
@@ -153,7 +197,7 @@ public class WebSocket
         }
     }
 
-    public void Send(byte[] message, byte opcode)
+    private void Send(byte[] message, byte opcode)
     {
         sslStream.Write(new[] { (byte)(0b10000000 | opcode) });
 
@@ -169,5 +213,11 @@ public class WebSocket
         {
             sslStream.Write(new[] { (byte)(message[i] ^ 0b11111111) });
         }
+    }
+
+    public void Disconnect()
+    {
+        connected = false;
+        sslStream.Close();
     }
 }

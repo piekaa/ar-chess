@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EventName
@@ -14,12 +15,16 @@ public enum EventName
     ClockUpdate,
     ARSpawn,
     GameFound,
-    
-    ArUiChangeGameType,
+
+    ArUiSmallButtonClick,
     ArUiGameModeAddTime,
     ArUiGameModeSubtractTime,
     ArUiGameModeAddIncrement,
     ArUiGameModeSubtractIncrement,
+    ArUiMainButtonClick,
+    ArUiPvpGameSelected,
+
+    Surrender,
 }
 
 public class EventData
@@ -35,6 +40,11 @@ public class EventData
 
     public readonly Vector3 Position;
     public readonly Quaternion Rotation;
+
+
+    public EventData()
+    {
+    }
 
     public EventData(GameObject gameObject)
     {
@@ -90,13 +100,28 @@ public class EventData
 
 public delegate void Event(EventData eventData);
 
-public class EventSystem
+public class EventSystem : MonoBehaviour
 {
-    private static Dictionary<EventName, Event> events = new();
+    private static EventSystem instance;
 
-    private static Queue<KeyValuePair<EventName, EventData>> toFire = new(); 
+    public static EventSystem Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<EventSystem>();
+            }
 
-    public static void Register(EventName eventName, Event e)
+            return instance;
+        }
+    }
+
+    private Dictionary<EventName, Event> events = new();
+
+    private Queue<KeyValuePair<EventName, EventData>> toFire = new();
+
+    public void Register(EventName eventName, Event e)
     {
         if (!events.ContainsKey(eventName))
         {
@@ -108,28 +133,34 @@ public class EventSystem
         }
     }
 
-    public static void Unregister(EventName eventName, Event e)
+    public void Unregister(EventName eventName, Event e)
     {
         events[eventName] -= e;
     }
 
-    public static void Fire(EventName eventName, EventData eventData)
+    public void Fire(EventName eventName, EventData eventData)
     {
-        // Debug.Log("Event: " + eventName);
         if (events.ContainsKey(eventName))
         {
             toFire.Enqueue(new KeyValuePair<EventName, EventData>(eventName, eventData));
         }
+    }
 
-        if (toFire.Count == 1)
+    private void Update()
+    {
+        Queue<KeyValuePair<EventName, EventData>> toFireNow = new();
+        
+        while (toFire.Count > 0)
         {
-            while (toFire.Count > 0)
-            {
-                var e = toFire.Peek();
-                events[e.Key](e.Value);
-                toFire.Dequeue();
-            }
+            toFireNow.Enqueue(toFire.Peek());
+            toFire.Dequeue();
         }
-       
+        
+        while (toFireNow.Count > 0)
+        {
+            var e = toFireNow.Peek();
+            events[e.Key](e.Value);
+            toFireNow.Dequeue();
+        }
     }
 }
