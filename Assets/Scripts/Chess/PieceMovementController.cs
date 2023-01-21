@@ -10,9 +10,12 @@ public class PieceMovementController : EventListener
 
     private string lastPromotionMove = "";
 
-    private void Awake()
+    [Listen(EventName.StartGame)]
+    private void Initialize(EventData eventData)
     {
         boardAnalyzer = new BoardAnalyzer(piecesController);
+        kingInCheck = null;
+        lastPromotionMove = "";
     }
 
     [Listen(EventName.SelectedPiece)]

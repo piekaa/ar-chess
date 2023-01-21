@@ -1,15 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class GameControllers : EventListener
 {
     [SerializeField] private LoginData loginData;
     private LichessController lichessController;
 
+    private void Awake()
+    {
+        new GameObject().AddComponent<PlayerController>();
+    }
+
     [Listen(EventName.GameFound)]
     private void Connect(EventData eventData)
     {
-        new GameObject().AddComponent<PlayerController>();
-        lichessController = new GameObject().AddComponent<LichessController>();
+        if (lichessController == null)
+        {
+            lichessController = new GameObject().AddComponent<LichessController>();
+        }
+
         lichessController.LoginData = loginData;
         lichessController.Connect(eventData.Text);
     }
@@ -17,9 +26,9 @@ public class GameControllers : EventListener
     [Listen(EventName.StartGame)]
     private void StartGame(EventData eventData)
     {
-        while (transform.childCount > 0)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Destroy(transform.GetChild(0));
+            Destroy(transform.GetChild(i).gameObject);
         }
 
         if (eventData.Text == "white")

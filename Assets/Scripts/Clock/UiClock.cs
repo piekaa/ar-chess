@@ -99,13 +99,13 @@ public class UiClock : EventListener
 
     protected override void EnterActiveState()
     {
+        currentGameType = -1;
         TurnOnNextGameType();
     }
 
     [Listen(EventName.ArUiSmallButtonClick)]
     private void ChangeGameType(EventData eventData)
     {
-        currentGameType = -1;
         TurnOnNextGameType();
     }
 

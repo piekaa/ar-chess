@@ -146,4 +146,13 @@ public class Board : EventListener
         lastMoveSquareFrom.ShowLastMove();
         lastMoveSquareTo.ShowLastMove();
     }
+
+    [Listen(EventName.GameEnd)]
+    private void ClearHighlights(EventData eventData)
+    {
+        lastMoveSquareFrom?.HideLastMove();
+        lastMoveSquareTo?.HideLastMove();
+        DeselectSquares(eventData);
+        
+    }
 }

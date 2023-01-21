@@ -84,7 +84,8 @@ public class LichessController : EventListener
 
                                 if (lichessMessage.d.clock != null)
                                 {
-                                    EventSystem.Instance.Fire(EventName.ClockUpdate, new EventData(lichessMessage.d.clock));
+                                    EventSystem.Instance.Fire(EventName.ClockUpdate,
+                                        new EventData(lichessMessage.d.clock));
                                 }
                             }
 

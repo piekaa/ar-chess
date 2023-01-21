@@ -140,6 +140,8 @@ public class EventSystem : MonoBehaviour
 
     public void Fire(EventName eventName, EventData eventData)
     {
+        Debug.Log("Queued event: " + eventName);
+
         if (events.ContainsKey(eventName))
         {
             toFire.Enqueue(new KeyValuePair<EventName, EventData>(eventName, eventData));
@@ -149,16 +151,17 @@ public class EventSystem : MonoBehaviour
     private void Update()
     {
         Queue<KeyValuePair<EventName, EventData>> toFireNow = new();
-        
+
         while (toFire.Count > 0)
         {
             toFireNow.Enqueue(toFire.Peek());
             toFire.Dequeue();
         }
-        
+
         while (toFireNow.Count > 0)
         {
             var e = toFireNow.Peek();
+            Debug.Log("Fired event: " + e.Key);
             events[e.Key](e.Value);
             toFireNow.Dequeue();
         }

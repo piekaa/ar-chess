@@ -21,7 +21,7 @@ public class PiecesSpawner
         
         foreach (var piece in piecesPositions.GetAllPieces())
         {
-            Object.Destroy(piece);
+            Object.Destroy(piece.gameObject);
         }
         
         piecesPositions.Clear();
