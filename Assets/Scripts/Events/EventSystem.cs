@@ -22,7 +22,10 @@ public enum EventName
     ArUiGameModeAddIncrement,
     ArUiGameModeSubtractIncrement,
     ArUiMainButtonClick,
+    
     ArUiPvpGameSelected,
+    ArUiFriendGameSelected,
+    ArUiStockfishGameSelected,
 
     Surrender,
 }

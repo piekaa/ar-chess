@@ -661,8 +661,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1664436451}
   - component: {fileID: 1664436452}
+  - component: {fileID: 1664436453}
   m_Layer: 0
-  m_Name: PvpGameSearch
+  m_Name: GameSearches
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -693,6 +694,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18e24f8a4c7a4ef19a47cb9a6b0819a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loginData: {fileID: 11400000, guid: 6ea2d71af661aa042846db670f7d4c2d, type: 2}
+--- !u!114 &1664436453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664436450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df0930d07464d53b9f26879a4cc5794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   loginData: {fileID: 11400000, guid: 6ea2d71af661aa042846db670f7d4c2d, type: 2}

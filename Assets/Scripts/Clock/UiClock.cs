@@ -15,6 +15,7 @@ public class UiClock : EventListener
     [SerializeField] private DigitMaterials digitMaterials;
 
     private MeshRenderer[] gameTypes;
+    private EventName[] gameTypeEvents;
     private int currentGameType = -1;
 
     private List<List<GameMode>> gameModesByGameType;
@@ -94,6 +95,7 @@ public class UiClock : EventListener
     private void Awake()
     {
         gameTypes = new[] { pvp, friend, stockfish };
+        gameTypeEvents = new[] { EventName.ArUiPvpGameSelected, EventName.ArUiFriendGameSelected, EventName.ArUiStockfishGameSelected };
         gameModesByGameType = new() { pvpGameModes, customGameModes, customGameModes };
     }
 
@@ -187,8 +189,8 @@ public class UiClock : EventListener
     {
         var gameMode = gameModesByGameType[currentGameType][currentGameMode];
 
-        var timeMinutes = gameMode.TimeSeconds / 60;
+        var timeMinutes = gameMode.TimeSeconds / 60f;
         var increment = gameMode.IncrementsSeconds[currentIncrementIndex];
-        EventSystem.Instance.Fire(EventName.ArUiPvpGameSelected, new EventData(timeMinutes+"+"+increment));
+        EventSystem.Instance.Fire(gameTypeEvents[currentGameType], new EventData(timeMinutes+"+"+increment));
     }
 }

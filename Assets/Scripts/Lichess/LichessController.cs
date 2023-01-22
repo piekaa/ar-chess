@@ -19,6 +19,7 @@ public class LichessController : EventListener
     // todo after some time those moves are not sent through web socket, handle it from fen steps
     private int moveCountBeforeStart = 0;
 
+    // todo disconnect on game end
     public void Connect(string mainPagePath)
     {
         new Thread(() =>

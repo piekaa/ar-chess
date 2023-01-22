@@ -10,7 +10,7 @@ public class PvpGameSearch : EventListener
 
 
     [Listen(EventName.ArUiPvpGameSelected)]
-    private void OnGameModeSelected(EventData eventData)
+    private void SearchGame(EventData eventData)
     {
         var poolInMessage = new PoolInMessage(new PoolInPayload(eventData.Text));
         var poolInJson = Piekson.ToJson(poolInMessage);
