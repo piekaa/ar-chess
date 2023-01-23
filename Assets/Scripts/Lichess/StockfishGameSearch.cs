@@ -11,12 +11,10 @@ public class StockfishGameSearch : EventListener
         new Thread(() =>
         {
             Debug.Log("Looking for stockfish game");
-            var location = LichessHttp.PostMatchRequestAndGetLocation(eventData.Text, loginData.cookie);
+            var location = LichessHttp.PostMatchRequestAndGetLocation(eventData.Text, loginData.cookie, "/setup/ai");
 
             // Debug.Log("Status: " + status);
             Debug.Log("Location: " + location);
-
-
             Http.Get("lichess.org", location, loginData.cookie);
 
             //todo if status
