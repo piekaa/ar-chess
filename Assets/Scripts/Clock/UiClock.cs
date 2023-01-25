@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR.OpenXR.Input;
 
 [MyState(State.ArUi)]
 public class UiClock : EventListener
@@ -95,7 +94,8 @@ public class UiClock : EventListener
     private void Awake()
     {
         gameTypes = new[] { pvp, friend, stockfish };
-        gameTypeEvents = new[] { EventName.ArUiPvpGameSelected, EventName.ArUiFriendGameSelected, EventName.ArUiStockfishGameSelected };
+        gameTypeEvents = new[]
+            { EventName.ArUiPvpGameSelected, EventName.ArUiFriendGameSelected, EventName.ArUiStockfishGameSelected };
         gameModesByGameType = new() { pvpGameModes, customGameModes, customGameModes };
     }
 
@@ -191,6 +191,6 @@ public class UiClock : EventListener
 
         var timeMinutes = gameMode.TimeSeconds / 60f;
         var increment = gameMode.IncrementsSeconds[currentIncrementIndex];
-        EventSystem.Instance.Fire(gameTypeEvents[currentGameType], new EventData(timeMinutes+"+"+increment));
+        EventSystem.Instance.Fire(gameTypeEvents[currentGameType], new EventData(timeMinutes + "+" + increment));
     }
 }
