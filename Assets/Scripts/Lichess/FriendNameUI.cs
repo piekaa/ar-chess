@@ -1,7 +1,9 @@
-﻿using System;
+﻿using UnityEngine.UI;
 
 public class FriendNameUI : EventListener
 {
+    private TimeControl timeControl;
+
     private void Awake()
     {
         Hide();
@@ -11,6 +13,7 @@ public class FriendNameUI : EventListener
     [Listen(EventName.ArUiFriendGameSelected)]
     private void Show(EventData eventData)
     {
+        timeControl = eventData.TimeControl;
         for (int i = 0; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
@@ -19,11 +22,11 @@ public class FriendNameUI : EventListener
 
     public void Accept()
     {
-        //todo name in event data
-        //todo time+increment in event data
-        EventSystem.Instance.Fire(EventName.ArUiFriendNameSelected, new EventData());
+        EventSystem.Instance.Fire(EventName.ArUiFriendNameSelected,
+            new EventData(timeControl, GetComponentInChildren<InputField>().text));
+        Hide();
     }
-    
+
     public void Hide()
     {
         for (int i = 0; i < transform.childCount; i++)
@@ -31,5 +34,4 @@ public class FriendNameUI : EventListener
             transform.GetChild(i).gameObject.SetActive(false);
         }
     }
-    
 }

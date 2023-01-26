@@ -28,6 +28,14 @@ public class DisplayDigit : MonoBehaviour
         { '7', new() { 0, 2, 5 } },
         { '8', new() { 0, 1, 2, 3, 4, 5, 6 } },
         { '9', new() { 0, 1, 2, 3, 5, 6 } },
+        { ' ', new() { } },
+        
+        { 'a', new() {4} },
+        { 'b', new() {1} },
+        { 'c', new() {0} },
+        { 'd', new() {2} },
+        { 'e', new() {5} },
+        { 'f', new() {6} },
     };
 
     public char toDisplay = ' ';

@@ -22,11 +22,11 @@ public enum EventName
     ArUiGameModeAddIncrement,
     ArUiGameModeSubtractIncrement,
     ArUiMainButtonClick,
-    
+
     ArUiPvpGameSelected,
     ArUiFriendGameSelected,
     ArUiFriendNameSelected,
-    
+
     ArUiStockfishGameSelected,
 
     Surrender,
@@ -46,9 +46,22 @@ public class EventData
     public readonly Vector3 Position;
     public readonly Quaternion Rotation;
 
+    public readonly TimeControl TimeControl;
+
 
     public EventData()
     {
+    }
+
+    public EventData(TimeControl timeControl)
+    {
+        TimeControl = timeControl;
+    }
+
+    public EventData(TimeControl timeControl, string text)
+    {
+        TimeControl = timeControl;
+        Text = text;
     }
 
     public EventData(GameObject gameObject)
@@ -100,6 +113,25 @@ public class EventData
     {
         Position = position;
         Rotation = rotation;
+    }
+}
+
+public class TimeControl
+{
+    public readonly int TimeSeconds;
+    public readonly int IncrementSeconds;
+
+    public float TimeMinutes => TimeSeconds / 60f;
+
+    public override string ToString()
+    {
+        return TimeSeconds / 60f + "+" + IncrementSeconds;
+    }
+
+    public TimeControl(int timeSeconds, int incrementSeconds)
+    {
+        TimeSeconds = timeSeconds;
+        IncrementSeconds = incrementSeconds;
     }
 }
 

@@ -1,14 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DisplayTime : EventListener
 {
     [SerializeField] private DisplayDigit[] digits;
 
-    public int seconds = 0;
+    private List<char> loadingAnimation = new() { 'a', 'b', 'c', 'd', 'e', 'f' };
+
+    private int seconds;
+
+    public int Seconds
+    {
+        get => seconds;
+        set
+        {
+            Loading = false;
+            seconds = value;
+        }
+    }
+
+    public bool Loading;
 
 
     private void Update()
     {
+        if (Loading)
+        {
+            foreach (var displayDigit in digits)
+            {
+                displayDigit.toDisplay =
+                    loadingAnimation[((int)(Time.time * 5)) % loadingAnimation.Count];
+            }
+            return;
+        }
+
         if (seconds < 0)
         {
             seconds = 0;

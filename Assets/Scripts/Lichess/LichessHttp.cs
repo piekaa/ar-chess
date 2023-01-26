@@ -1,23 +1,16 @@
-﻿using System.Collections.Generic;
-using UnityEditor.Networking.PlayerConnection;
-
-public class LichessHttp
+﻿public class LichessHttp
 {
-    
-    public static string PostMatchRequestAndGetLocation(string timePlusIncrement, string cookie, string path)
+    public static string PostMatchRequestAndGetLocation(TimeControl timeControl, string cookie, string path)
     {
-        var time = timePlusIncrement.Split("+")[0];
-        var increment = timePlusIncrement.Split("+")[1];
-        
         //todo handle status
         var (status, headers) = Http.PostMultipart("lichess.org", path, cookie, new()
         {
             { "variant", "1" },
             { "fen", "" },
             { "timeMode", "1" },
-            { "time", time},
+            { "time", timeControl.TimeMinutes + "" },
             { "time_range", "9" },
-            { "increment", increment },
+            { "increment", timeControl.IncrementSeconds + "" },
             { "increment_range", "0" },
             { "days", "2" },
             { "days_range", "2" },

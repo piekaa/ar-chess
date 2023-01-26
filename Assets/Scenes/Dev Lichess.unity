@@ -206,7 +206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 31121403}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1984507871}
+        m_TargetAssemblyTypeName: FriendNameUI, Assembly-CSharp
+        m_MethodName: Accept
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &31121403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1370,7 +1382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.031167962, y: 0.37054655}
   m_AnchorMax: {x: 0.93141603, y: 0.448}
-  m_AnchoredPosition: {x: 1.6499786, y: -0.19999695}
+  m_AnchoredPosition: {x: 1.6499634, y: -0.19999695}
   m_SizeDelta: {x: -0.7000122, y: 3.0778008}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1735414118
@@ -1416,7 +1428,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1735414119}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1984507871}
+        m_TargetAssemblyTypeName: FriendNameUI, Assembly-CSharp
+        m_MethodName: Hide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1735414119
 MonoBehaviour:
   m_ObjectHideFlags: 0

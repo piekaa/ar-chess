@@ -70,8 +70,8 @@ public class Clock : EventListener
 
     private void UpdateClockDisplay()
     {
-        white.seconds = (int)whiteTime;
-        black.seconds = (int)blackTime;
+        white.Seconds = (int)whiteTime;
+        black.Seconds = (int)blackTime;
     }
 
     [Listen(EventName.ArUiSmallButtonClick)]

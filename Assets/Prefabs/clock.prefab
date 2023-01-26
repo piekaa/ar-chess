@@ -3722,6 +3722,7 @@ GameObject:
   - component: {fileID: 5870551578450101409}
   - component: {fileID: 1799810154351450167}
   - component: {fileID: 4996611813413601751}
+  - component: {fileID: 4577935448408349973}
   m_Layer: 0
   m_Name: clock
   m_TagString: Untagged
@@ -3848,6 +3849,20 @@ MonoBehaviour:
   friend: {fileID: 1305508470804344452}
   stockfish: {fileID: 5528696349581704452}
   digitMaterials: {fileID: 11400000, guid: e3955a40c8d479748b83433dcead4951, type: 2}
+--- !u!114 &4577935448408349973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5366214872160740724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56df5c37d6649abb776025709640a92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: {fileID: 2281248180570525111}
+  increment: {fileID: 8778440690865859937}
 --- !u!1 &5413173489356916156
 GameObject:
   m_ObjectHideFlags: 0
@@ -4586,7 +4601,6 @@ GameObject:
   - component: {fileID: 4791802513917306117}
   - component: {fileID: 1206452517341420139}
   - component: {fileID: 9014562907495068965}
-  - component: {fileID: 683703265794514846}
   m_Layer: 11
   m_Name: button
   m_TagString: Untagged
@@ -4686,21 +4700,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
   onClickEvent: 16
---- !u!114 &683703265794514846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6102729316229603602}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ca777431cdc4636950a239da0706de3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tiltAnimation:
-  - {fileID: 11400000, guid: a4e2439076f8fe846828c18d18b7514f, type: 2}
-  - {fileID: 11400000, guid: 07528b2bb9a4d964e8d892c96fa7195a, type: 2}
 --- !u!1 &6179595981372467704
 GameObject:
   m_ObjectHideFlags: 0
@@ -5060,7 +5059,7 @@ MonoBehaviour:
   - {fileID: 3388358302809135918}
   - {fileID: 304754924651348076}
   - {fileID: 4795875457512917573}
-  seconds: 0
+  Loading: 0
 --- !u!1 &6858971877859485628
 GameObject:
   m_ObjectHideFlags: 0
@@ -5525,7 +5524,7 @@ MonoBehaviour:
   - {fileID: 4772834176273371641}
   - {fileID: 5755183526102328472}
   - {fileID: 2054766257289323766}
-  seconds: 0
+  Loading: 0
 --- !u!1 &7312981725884407317
 GameObject:
   m_ObjectHideFlags: 0

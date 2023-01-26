@@ -9,6 +9,7 @@ public enum State
     WhitePromotion,
     BlackPromotion,
     ArUi,
+    ArUiLoading,
 }
 
 
@@ -24,10 +25,11 @@ public class StateSystem : EventListener
             {
                 instance = FindObjectOfType<StateSystem>();
             }
+
             return instance;
         }
     }
-    
+
     public State CurrentState { get; private set; } = State.Initial;
 
     [Listen(EventName.ARSpawn)]
@@ -68,6 +70,19 @@ public class StateSystem : EventListener
     private void OnPromotion(EventData eventData)
     {
         ChangeState(CurrentState == State.WhiteMove ? State.WhitePromotion : State.BlackPromotion);
+    }
+
+
+    [Listen(EventName.ArUiStockfishGameSelected)]
+    private void StartLoadingOnStockfish(EventData eventData)
+    {
+        ChangeState(State.ArUiLoading);
+    }
+    
+    [Listen(EventName.ArUiFriendNameSelected)]
+    private void StartLoadingOnFriend(EventData eventData)
+    {
+        ChangeState(State.ArUiLoading);
     }
 
     private void ChangeState(State newState, string eventText = "")

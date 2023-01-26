@@ -11,7 +11,7 @@ public class FriendGameSearch : EventListener
 
     private Coroutine nulls;
     private Coroutine pings;
-    
+
     [Listen(EventName.ArUiFriendNameSelected)]
     private void SearchGame(EventData eventData)
     {
@@ -19,11 +19,11 @@ public class FriendGameSearch : EventListener
         {
             Debug.Log("Setup request");
             location =
-                LichessHttp.PostMatchRequestAndGetLocation(eventData.Text, loginData.cookie, "/setup/friend");
+                LichessHttp.PostMatchRequestAndGetLocation(eventData.TimeControl, loginData.cookie, "/setup/friend");
 
             Debug.Log("Location: " + location);
 
-          
+
             var (status, _) = Http.PostMultipart("lichess.org", $"/challenge{location}/to-friend", loginData.cookie,
                 new()
                 {
@@ -67,7 +67,7 @@ public class FriendGameSearch : EventListener
             {
                 return;
             }
-            
+
             var lichessMessage = Piekson.FromJson<LichessMessage>(text);
 
             if (lichessMessage.t == "reload")
@@ -81,7 +81,7 @@ public class FriendGameSearch : EventListener
                     {
                         return;
                     }
-                    
+
                     if (response.Contains("<div id=\"zenzone\">"))
                     {
                         webSocket.Disconnect();
@@ -117,8 +117,6 @@ gra sie zaczela
 
 
                 */
-                
-                
             }
         }
     }
@@ -126,10 +124,17 @@ gra sie zaczela
     [Listen(EventName.GameFound)]
     private void StopCoroutines(EventData eventData)
     {
-        StopCoroutine(nulls);
-        StopCoroutine(pings);
+        if (nulls != null)
+        {
+            StopCoroutine(nulls);
+        }
+
+        if (pings != null)
+        {
+            StopCoroutine(pings);
+        }
     }
-    
+
     private IEnumerator SendNulls()
     {
         for (;;)

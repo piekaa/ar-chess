@@ -144,7 +144,7 @@ public class UiClock : EventListener
         currentGameMode++;
         currentGameMode %= gameModesByGameType[currentGameType].Count;
 
-        time.seconds = gameModesByGameType[currentGameType][currentGameMode].TimeSeconds;
+        time.Seconds = gameModesByGameType[currentGameType][currentGameMode].TimeSeconds;
 
         currentIncrementIndex = -1;
         NextIncrement();
@@ -156,20 +156,19 @@ public class UiClock : EventListener
         currentGameMode--;
         currentGameMode = currentGameMode == -1 ? gameModesByGameType[currentGameType].Count - 1 : currentGameMode;
 
-        time.seconds = gameModesByGameType[currentGameType][currentGameMode].TimeSeconds;
+        time.Seconds = gameModesByGameType[currentGameType][currentGameMode].TimeSeconds;
 
         currentIncrementIndex = -1;
         NextIncrement();
     }
-
-
+    
     private void NextIncrement()
     {
         var gameMode = gameModesByGameType[currentGameType][currentGameMode];
 
         currentIncrementIndex++;
         currentIncrementIndex %= gameMode.IncrementsSeconds.Count;
-        increment.seconds = gameMode.IncrementsSeconds[currentIncrementIndex];
+        increment.Seconds = gameMode.IncrementsSeconds[currentIncrementIndex];
     }
 
     [Listen(EventName.ArUiGameModeSubtractIncrement)]
@@ -181,16 +180,14 @@ public class UiClock : EventListener
         currentIncrementIndex =
             currentIncrementIndex == -1 ? gameMode.IncrementsSeconds.Count - 1 : currentIncrementIndex;
 
-        increment.seconds = gameMode.IncrementsSeconds[currentIncrementIndex];
+        increment.Seconds = gameMode.IncrementsSeconds[currentIncrementIndex];
     }
 
     [Listen(EventName.ArUiMainButtonClick)]
     private void OnMainButtonClick(EventData eventData)
     {
         var gameMode = gameModesByGameType[currentGameType][currentGameMode];
-
-        var timeMinutes = gameMode.TimeSeconds / 60f;
-        var increment = gameMode.IncrementsSeconds[currentIncrementIndex];
-        EventSystem.Instance.Fire(gameTypeEvents[currentGameType], new EventData(timeMinutes + "+" + increment));
+        EventSystem.Instance.Fire(gameTypeEvents[currentGameType],
+            new EventData(new TimeControl(gameMode.TimeSeconds, gameMode.IncrementsSeconds[currentIncrementIndex])));
     }
 }
