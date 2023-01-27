@@ -37,6 +37,12 @@ public class StateSystem : EventListener
     {
         ChangeState(State.ArUi);
     }
+    
+    [Listen(EventName.ArUiFriendGameDeclined)]
+    private void BackToArUiIfDeclined(EventData eventData)
+    {
+        ChangeState(State.ArUi);
+    }
 
     [Listen(EventName.StartGame)]
     private void OnStart(EventData eventData)
@@ -72,6 +78,11 @@ public class StateSystem : EventListener
         ChangeState(CurrentState == State.WhiteMove ? State.WhitePromotion : State.BlackPromotion);
     }
 
+    [Listen(EventName.ArUiPvpGameSelected)]
+    private void StartLoadingOnPvp(EventData eventData)
+    {
+        ChangeState(State.ArUiLoading);
+    }
 
     [Listen(EventName.ArUiStockfishGameSelected)]
     private void StartLoadingOnStockfish(EventData eventData)

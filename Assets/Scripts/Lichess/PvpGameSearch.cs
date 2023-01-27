@@ -14,8 +14,7 @@ public class PvpGameSearch : EventListener
     {
         var poolInMessage = new PoolInMessage(new PoolInPayload(eventData.TimeControl.ToString()));
         var poolInJson = Piekson.ToJson(poolInMessage);
-        Debug.Log(poolInJson);
-
+        
         webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
             "/lobby/socket/v5?sri=CVZEVKrY9Fry", loginData.cookie);
         webSocket.Send("null");
@@ -43,8 +42,7 @@ public class PvpGameSearch : EventListener
         switch (message)
         {
             case WebSocketTextMessage textMessage:
-                 Debug.Log(textMessage.Text);
-
+                 
                 if (textMessage.Text.StartsWith("{"))
                 {
                     try

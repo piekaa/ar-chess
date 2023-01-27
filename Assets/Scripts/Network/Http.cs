@@ -42,12 +42,8 @@ public class Http
 
             var (status, responseHeaders) = ReadResponseLineAndHeaders(sslStream);
 
-            Debug.Log((status, responseHeaders));
-
 
             var contentLength = int.Parse(responseHeaders["Content-Length"]);
-
-            Debug.Log(contentLength);
 
             for (int i = 0; i < contentLength; i++)
             {
@@ -215,10 +211,7 @@ public class Http
         {
             responseString += (char)response[i];
         }
-
-
-        Debug.Log(responseString);
-
+        
 
         var lines = responseString.Split("\r\n").Where(line => line != "").ToArray();
 

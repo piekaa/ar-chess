@@ -26,6 +26,8 @@ public enum EventName
     ArUiPvpGameSelected,
     ArUiFriendGameSelected,
     ArUiFriendNameSelected,
+    
+    ArUiFriendGameDeclined,
 
     ArUiStockfishGameSelected,
 

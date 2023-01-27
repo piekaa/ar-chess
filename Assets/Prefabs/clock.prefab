@@ -4601,6 +4601,7 @@ GameObject:
   - component: {fileID: 4791802513917306117}
   - component: {fileID: 1206452517341420139}
   - component: {fileID: 9014562907495068965}
+  - component: {fileID: 5348451353244960134}
   m_Layer: 11
   m_Name: button
   m_TagString: Untagged
@@ -4700,6 +4701,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animation: {fileID: 11400000, guid: dfc7871342c5a5045b59c55a3fc71a64, type: 2}
   onClickEvent: 16
+--- !u!114 &5348451353244960134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6102729316229603602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6857b36dc9df40a7888541a90e561359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlackTilt: {fileID: 11400000, guid: a4e2439076f8fe846828c18d18b7514f, type: 2}
+  WhiteTilt: {fileID: 11400000, guid: 07528b2bb9a4d964e8d892c96fa7195a, type: 2}
 --- !u!1 &6179595981372467704
 GameObject:
   m_ObjectHideFlags: 0

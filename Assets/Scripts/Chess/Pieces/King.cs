@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//todo KING CANNOT MOVE!
+//todo KING CANNOT MOVE somtimes (castle?)!
 
 public class King : Piece
 {
