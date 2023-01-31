@@ -28,21 +28,33 @@ public class LichessController : EventListener
 
             var jsonStart = initialHtml.IndexOf("{LichessRound.boot(") + "{LichessRound.boot(".Length;
             var jsonEnd = initialHtml.IndexOf("})</script></body></html>") - 1;
-        
+
             var json = initialHtml.Substring(jsonStart, jsonEnd - jsonStart);
 
             var initialData = Piekson.FromJson<InitialData>(json);
-        
+
             moveCountBeforeStart = initialData.data.steps.Max(step => step.ply);
+
+
+            Players players;
+
+            if (initialData.data.player.color == InitialDataColor.white)
+            {
+                players = new Players(initialData.data.player.user.username, initialData.data.opponent.user.username);
+            }
+            else
+            {
+                players = new Players(initialData.data.opponent.user.username, initialData.data.player.user.username);
+            }
 
             EventSystem.Instance.Fire(EventName.StartGame,
                 new EventData(initialData.data.player.color == InitialDataColor.white ? "white" : "black",
-                    initialData.data.clock, new Fen(initialData.data.steps[0].fen)));
+                    initialData.data.clock, new Fen(initialData.data.steps[0].fen), players));
 
             webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
                 initialData.data.url.socket + "?sri=CVZEVKrY9Fry&v=0", LoginData.cookie);
         }).Start();
-        
+
         StartCoroutine(SendNulls());
     }
 
@@ -92,7 +104,7 @@ public class LichessController : EventListener
 
                             moveCount++;
                         }
-                        
+
                         if (lichessMessage.t == "endData")
                         {
                             Debug.Log(lichessMessage.d.winner);
@@ -106,6 +118,7 @@ public class LichessController : EventListener
                                   textMessage.Text);
                     }
                 }
+
                 break;
         }
     }

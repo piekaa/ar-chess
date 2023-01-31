@@ -8,6 +8,7 @@ public class InitialData
 public class InitialDataData
 {
     public InitialDataPlayer player;
+    public InitialDataPlayer opponent;
     public InitialDataUrl url;
     public ClockData clock;
     public List<InitialDataStep> steps;

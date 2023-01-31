@@ -1,18 +1,23 @@
-﻿using System;
+﻿using System.ComponentModel;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Badge : EventListener
 {
-    [SerializeField] private Text text;
+    [SerializeField] private LCD lcd;
+    [SerializeField] private bool black;
+    
 
-    [SerializeField] private Material badgeNameMaterial;
-    
-    
-    // https://forum.unity.com/threads/ui-text-to-texture.397135/
-    
-    private void LateUpdate()
+    [Listen(EventName.StartGame)]
+    private void DisplayName(EventData eventData)
     {
-        badgeNameMaterial.mainTexture = text.mainTexture;
+        if (black)
+        {
+            lcd.ToDisplay = eventData.Players.BlackPlayerName;
+        }
+        else
+        {
+            lcd.ToDisplay = eventData.Players.WhitePlayerName;   
+        }
     }
+    
 }

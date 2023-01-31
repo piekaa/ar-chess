@@ -26,7 +26,7 @@ public enum EventName
     ArUiPvpGameSelected,
     ArUiFriendGameSelected,
     ArUiFriendNameSelected,
-    
+
     ArUiFriendGameDeclined,
 
     ArUiStockfishGameSelected,
@@ -49,6 +49,8 @@ public class EventData
     public readonly Quaternion Rotation;
 
     public readonly TimeControl TimeControl;
+
+    public readonly Players Players;
 
 
     public EventData()
@@ -82,11 +84,12 @@ public class EventData
         Fen = fen;
     }
 
-    public EventData(string text, ClockData clockData, Fen fen)
+    public EventData(string text, ClockData clockData, Fen fen, Players players)
     {
         Text = text;
-        ClockData = clockData;
         Fen = fen;
+        ClockData = clockData;
+        Players = players;
     }
 
     public EventData(Piece piece)
@@ -115,6 +118,18 @@ public class EventData
     {
         Position = position;
         Rotation = rotation;
+    }
+}
+
+public class Players
+{
+    public readonly string WhitePlayerName;
+    public readonly string BlackPlayerName;
+
+    public Players(string whitePlayerName, string blackPlayerName)
+    {
+        WhitePlayerName = whitePlayerName;
+        BlackPlayerName = blackPlayerName;
     }
 }
 
