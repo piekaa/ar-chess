@@ -32,6 +32,8 @@ public enum EventName
     ArUiStockfishGameSelected,
 
     Surrender,
+    
+    Challenged,
 }
 
 public class EventData

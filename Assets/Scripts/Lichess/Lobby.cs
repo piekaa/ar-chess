@@ -2,25 +2,21 @@
 using System.Collections;
 using UnityEngine;
 
-public class PvpGameSearch : EventListener
+public class Lobby : EventListener
 {
     [SerializeField] private LoginData loginData;
+    
     private WebSocket webSocket;
     private Coroutine sendNullsCoroutine; 
 
-
-    [Listen(EventName.ArUiPvpGameSelected)]
-    private void SearchGame(EventData eventData)
+    [Listen(EventName.ARSpawn)]
+    private void Connect(EventData eventData)
     {
-        var poolInMessage = new PoolInMessage(new PoolInPayload(eventData.TimeControl.ToString()));
-        var poolInJson = Piekson.ToJson(poolInMessage);
-        
         webSocket = new WebSocket("socket4.lichess.org", "lichess.org",
             "/lobby/socket/v5?sri=CVZEVKrY9Fry", loginData.cookie);
-        webSocket.Send(poolInJson);
         sendNullsCoroutine = StartCoroutine(SendNulls());
     }
-
+    
     protected override void MyUpdate()
     {
         if (webSocket == null)
@@ -47,13 +43,10 @@ public class PvpGameSearch : EventListener
                     try
                     {
                         var lichessMessage = Piekson.FromJson<LichessMessage>(textMessage.Text);
-
-                        if (lichessMessage.t == "redirect")
+                        
+                        if (lichessMessage.t == "challenges")
                         {
-                            EventSystem.Instance.Fire(EventName.GameFound, new EventData(lichessMessage.d.url));
-                            webSocket.Disconnect();
-                            StopCoroutine(sendNullsCoroutine);
-                            webSocket = null;
+                            EventSystem.Instance.Fire(EventName.Challenged, new EventData(lichessMessage.d.@in[0].challenger.name));
                         }
                     }
                     catch (Exception e)
@@ -68,6 +61,7 @@ public class PvpGameSearch : EventListener
         }
     }
     
+    
     private IEnumerator SendNulls()
     {
         for (;;)
@@ -75,26 +69,5 @@ public class PvpGameSearch : EventListener
             yield return new WaitForSeconds(2);
             webSocket?.Send("null");
         }
-    }
-}
-
-public class PoolInMessage
-{
-    public string t = "poolIn";
-    public PoolInPayload d;
-
-    public PoolInMessage(PoolInPayload d)
-    {
-        this.d = d;
-    }
-}
-
-public class PoolInPayload
-{
-    public string id;
-
-    public PoolInPayload(string id)
-    {
-        this.id = id;
     }
 }

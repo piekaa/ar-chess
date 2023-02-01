@@ -1,4 +1,6 @@
-﻿public class LichessMessage
+﻿using System.Collections.Generic;
+
+public class LichessMessage
 {
     public string t;
     public int v;
@@ -24,6 +26,7 @@ public class MessagePayload
     public bool white;
     public Promotion promotion;
     public ClockData clock;
+    public List<In> @in;
 }
 
 public class Promotion
@@ -35,4 +38,15 @@ public class ClockData
 {
     public float white;
     public float black;
+}
+
+public class In
+{
+    public string id;
+    public Challenger challenger;
+}
+
+public class Challenger
+{
+    public string name;
 }
