@@ -24,4 +24,11 @@
 
         return headers["Location"];
     }
+
+    //todo handle status
+    public static string PostAcceptChallengeAndGetLocation(string challengeId, string cookie)
+    {
+        var (status, headers, _) = Http.Post("lichess.org", "/challenge/" + challengeId + "/accept", cookie);
+        return headers["Location"];
+    }
 }

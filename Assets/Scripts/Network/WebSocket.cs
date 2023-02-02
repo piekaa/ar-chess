@@ -43,7 +43,7 @@ public class WebSocket
 
         readThread = new Thread(() =>
         {
-            Http.ReadResponseLineAndHeaders(sslStream);
+            Http.ReadResponseStatusAndHeaders(sslStream);
             connected = true;
             
             foreach (var message in messageQueue)

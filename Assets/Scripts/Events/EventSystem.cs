@@ -34,6 +34,9 @@ public enum EventName
     Surrender,
     
     Challenged,
+    
+    ChallengeAccepted,
+    ChallengeDeclined,
 }
 
 public class EventData
