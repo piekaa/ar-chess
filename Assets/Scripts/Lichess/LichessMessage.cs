@@ -27,6 +27,7 @@ public class MessagePayload
     public Promotion promotion;
     public ClockData clock;
     public List<In> @in;
+    public I18n i18n;
 }
 
 public class Promotion
@@ -44,9 +45,22 @@ public class In
 {
     public string id;
     public Challenger challenger;
+    public FriendChallengeTimeControl timeControl;
+    public bool rated;
+}
+
+public class FriendChallengeTimeControl
+{
+    public string show;
 }
 
 public class Challenger
 {
     public string name;
+}
+
+public class I18n
+{
+    public string rated;
+    public string casual;
 }

@@ -57,9 +57,15 @@ public class EventData
 
     public readonly Players Players;
 
-
+    public readonly FriendChallenge FriendChallenge;
+    
     public EventData()
     {
+    }
+
+    public EventData(FriendChallenge friendChallenge)
+    {
+        FriendChallenge = friendChallenge;
     }
 
     public EventData(TimeControl timeControl)
@@ -154,6 +160,20 @@ public class TimeControl
     {
         TimeSeconds = timeSeconds;
         IncrementSeconds = incrementSeconds;
+    }
+}
+
+public class FriendChallenge
+{
+    public readonly string ChallengerName;
+    public readonly string TimeControlString;
+    public readonly string ScoringTypeTranslated;
+
+    public FriendChallenge(string challengerName, string timeControlString, string scoringTypeTranslated)
+    {
+        ChallengerName = challengerName;
+        TimeControlString = timeControlString;
+        ScoringTypeTranslated = scoringTypeTranslated;
     }
 }
 

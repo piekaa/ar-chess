@@ -36,6 +36,14 @@ public class Badge : EventListener
     [Listen(EventName.Challenged)]
     private void DisplayChallenge(EventData eventData)
     {
-        line1.ToDisplay = eventData.Text;
+        line1.ToDisplay = eventData.FriendChallenge.ChallengerName;
+        line2.ToDisplay = eventData.FriendChallenge.TimeControlString + " " + eventData.FriendChallenge.ScoringTypeTranslated;
+    }
+
+    [Listen(EventName.ChallengeDeclined)]
+    private void ClearDisplay(EventData eventData)
+    {
+        line1.ToDisplay = "";
+        line2.ToDisplay = "";
     }
 }

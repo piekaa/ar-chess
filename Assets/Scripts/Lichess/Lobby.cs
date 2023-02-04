@@ -48,9 +48,20 @@ public class Lobby : EventListener
 
                         if (lichessMessage.t == "challenges")
                         {
+                            if (lichessMessage.d.@in.Count == 0 || lichessMessage.d.@in[0] == null)
+                            {
+                                return;
+                            }
+
                             challengeId = lichessMessage.d.@in[0].id;
                             EventSystem.Instance.Fire(EventName.Challenged,
-                                new EventData(lichessMessage.d.@in[0].challenger.name));
+                                new EventData(new FriendChallenge(
+                                    lichessMessage.d.@in[0].challenger.name,
+                                    lichessMessage.d.@in[0].timeControl.show,
+                                    lichessMessage.d.@in[0].rated
+                                        ? lichessMessage.d.i18n.rated
+                                        : lichessMessage.d.i18n.casual
+                                )));
                         }
                     }
                     catch (Exception e)
@@ -71,9 +82,15 @@ public class Lobby : EventListener
         webSocket.Disconnect();
         webSocket = null;
         StopCoroutine(sendNullsCoroutine);
-        
+
         var location = LichessHttp.PostAcceptChallengeAndGetLocation(challengeId, loginData.cookie);
         EventSystem.Instance.Fire(EventName.GameFound, new EventData(location));
+    }
+
+    [Listen(EventName.ChallengeDeclined)]
+    private void DeclineChallenge(EventData eventData)
+    {
+        LichessHttp.PostDeclineChallenge(challengeId, loginData.cookie);
     }
 
 

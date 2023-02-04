@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //todo rename
@@ -95,7 +96,7 @@ public class PiecesController : EventListener
 
     public List<Piece> GetAllPieces()
     {
-        return piecesPositions.GetAllPieces();
+        return piecesPositions.GetAllPieces().Where(piece => piece.position != "xx").ToList();
     }
 
     public void PromoteToPiece(string position, char pieceType, bool black)

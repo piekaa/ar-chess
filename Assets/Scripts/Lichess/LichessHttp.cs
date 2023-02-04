@@ -31,4 +31,10 @@
         var (status, headers, _) = Http.Post("lichess.org", "/challenge/" + challengeId + "/accept", cookie);
         return headers["Location"];
     }
+
+    //todo handle status
+    public static void PostDeclineChallenge(string challengeId, string cookie)
+    {
+        Http.Post("lichess.org", "/challenge/" + challengeId + "/decline", cookie);
+    }
 }
