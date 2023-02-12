@@ -18,14 +18,13 @@ public class PiecesSpawner
 
     public void SpawnPieces(Fen fen)
     {
-        
         foreach (var piece in piecesPositions.GetAllPieces())
         {
             Object.Destroy(piece.gameObject);
         }
-        
+
         piecesPositions.Clear();
-        
+
         var piecesByLetters = new Dictionary<char, Piece>()
         {
             { 'r', blackPieces.Rook },
@@ -42,10 +41,10 @@ public class PiecesSpawner
             { 'K', whitePieces.King },
             { 'P', whitePieces.Pawn },
         };
-        
+
 
         var fenIndexer = new FenIndexer();
-        
+
         foreach (var placementInfo in fen.placements)
         {
             if (char.IsDigit(placementInfo))
@@ -54,8 +53,10 @@ public class PiecesSpawner
                 {
                     fenIndexer.Next();
                 }
+
                 continue;
             }
+
             Instantiate(piecesByLetters[placementInfo], fenIndexer.Next(), char.IsLower(placementInfo));
         }
     }
@@ -93,6 +94,7 @@ public class PiecesSpawner
             Quaternion.Euler(0, black ? 0 : 180, 0));
         p.black = black;
         p.position = position;
+        p.transform.parent = board.transform;
         piecesPositions.AddNewPiece(p, Board.PositionToIndex(position));
     }
 }

@@ -31,7 +31,7 @@ public abstract class Piece : Selectable
         {
             if (!Captured)
             {
-                transform.position = value;
+                transform.localPosition = value;
             }
         }
     }
@@ -100,14 +100,17 @@ public abstract class Piece : Selectable
 
     protected IEnumerator MoveAnimation(Vector3 targetPosition)
     {
-        var startX = transform.position.x;
-        var startZ = transform.position.z;
+        targetPosition = TargetLocalPosition(targetPosition);
+        
+        var startX = transform.localPosition.x;
+        var startZ = transform.localPosition.z;
+
 
         for (float step = 0; step < 1; step += 10 * Time.deltaTime)
         {
             pos = new Vector3(
                 Mathf.Lerp(startX, targetPosition.x, step),
-                transform.position.y,
+                transform.localPosition.y,
                 Mathf.Lerp(startZ, targetPosition.z, step));
             yield return null;
         }
@@ -117,6 +120,8 @@ public abstract class Piece : Selectable
 
     protected IEnumerator JumpAnimation(float height, Vector3 targetPosition)
     {
+        targetPosition = TargetLocalPosition(targetPosition);
+        
         if (!groundYSet)
         {
             groundY = transform.localPosition.y;
@@ -148,5 +153,14 @@ public abstract class Piece : Selectable
     protected virtual void OnGameEnd(EventData eventData)
     {
         gameObject.AddComponent<Rigidbody>();
+    }
+
+    private Vector3 TargetLocalPosition(Vector3 targetPosition)
+    {
+        var temp = transform.position;
+        transform.position = targetPosition;
+        var local = transform.localPosition;
+        transform.position = temp;
+        return local;
     }
 }

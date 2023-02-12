@@ -50,7 +50,7 @@ public class King : Piece
         base.Move(position, moveNumber, boardDistanceY, forAnalyze);
         if (nextMoveCastle)
         {
-            StartCoroutine(JumpAnimation(0.008f, position));
+            StartCoroutine(JumpAnimation(0.08f, position));
         }
         nextMoveCastle = false;
     }

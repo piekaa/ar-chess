@@ -40,11 +40,11 @@ public class LichessController : EventListener
 
             if (initialData.data.player.color == InitialDataColor.white)
             {
-                players = new Players(initialData.data.player.user.username, initialData.data.opponent.user.username);
+                players = new Players(initialData.data?.player?.user?.username, initialData?.data?.opponent?.user?.username);
             }
             else
             {
-                players = new Players(initialData.data.opponent.user.username, initialData.data.player.user.username);
+                players = new Players(initialData.data?.opponent?.user?.username, initialData.data?.player?.user?.username);
             }
 
             EventSystem.Instance.Fire(EventName.StartGame,

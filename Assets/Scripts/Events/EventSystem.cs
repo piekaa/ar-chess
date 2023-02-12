@@ -139,8 +139,8 @@ public class Players
 
     public Players(string whitePlayerName, string blackPlayerName)
     {
-        WhitePlayerName = whitePlayerName;
-        BlackPlayerName = blackPlayerName;
+        WhitePlayerName = whitePlayerName ?? "";
+        BlackPlayerName = blackPlayerName ?? "";
     }
 }
 
