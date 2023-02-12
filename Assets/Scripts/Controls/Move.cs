@@ -1,3 +1,5 @@
+#if UNITY_STANDALONE_WIN
+
 using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEngine;
@@ -114,3 +116,6 @@ public class Move : MonoBehaviour
 
     }
 }
+
+
+#endif

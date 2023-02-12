@@ -24,7 +24,7 @@ public class LoginController : MonoBehaviour
         if (status == 200)
         {
             loginData.cookie = cookie;
-            SceneManager.LoadScene("Dev Lichess");
+            SceneManager.LoadScene("Lichess Ar");
         }
     }
 }

@@ -24,6 +24,6 @@ public class Knight : Piece
     protected override void StartMoveAnimation(Vector3 targetPosition)
     {
         StartCoroutine(MoveAnimation(targetPosition));
-        StartCoroutine(JumpAnimation(0.08f));
+        StartCoroutine(JumpAnimation(0.008f, targetPosition));
     }
 }

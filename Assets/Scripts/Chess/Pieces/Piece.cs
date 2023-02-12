@@ -115,33 +115,33 @@ public abstract class Piece : Selectable
         pos = targetPosition;
     }
 
-    protected IEnumerator JumpAnimation(float height)
+    protected IEnumerator JumpAnimation(float height, Vector3 targetPosition)
     {
         if (!groundYSet)
         {
-            groundY = transform.position.y;
+            groundY = transform.localPosition.y;
             groundYSet = true;
         }
 
         for (float step = 0; step < 1; step += 20 * Time.deltaTime)
         {
             pos = new Vector3(
-                transform.position.x,
+                transform.localPosition.x,
                 Mathf.Lerp(groundY, height, step),
-                transform.position.z);
+                transform.localPosition.z);
             yield return null;
         }
 
         for (float step = 0; step < 1; step += 20 * Time.deltaTime)
         {
             pos = new Vector3(
-                transform.position.x,
+                transform.localPosition.x,
                 Mathf.Lerp(height, groundY, step),
-                transform.position.z);
+                transform.localPosition.z);
             yield return null;
         }
 
-        pos = new Vector3(transform.position.x, groundY, transform.position.z);
+        pos = targetPosition;
     }
 
     [Listen(EventName.GameEnd)]

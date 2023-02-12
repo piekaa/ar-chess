@@ -1,7 +1,4 @@
 ﻿
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-
 [MyState(State.BlackPromotion)]
 public class BlackPromotionSelector : Selector
 {

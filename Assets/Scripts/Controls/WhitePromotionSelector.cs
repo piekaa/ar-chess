@@ -1,7 +1,4 @@
 ﻿
-using UnityEditor;
-using UnityEditor.Experimental.GraphView;
-
 [MyState(State.WhitePromotion)]
 public class WhitePromotionSelector : Selector
 {

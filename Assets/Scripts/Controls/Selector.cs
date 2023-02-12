@@ -1,17 +1,25 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public abstract class Selector : EventListener
 {
     private Selectable lastSelected;
 
-    private Camera camera;
+    private GameObject cameraObject;
 
     private int cooldown;
-    
+
     private void Start()
     {
-        camera = Camera.main;
+        var manager = FindObjectOfType<ARCameraManager>();
+        if (manager != null)
+        {
+            cameraObject = manager.gameObject;
+        }
+        else
+        {
+            cameraObject = Camera.main.gameObject;    
+        }
     }
 
     protected override void MyUpdate()
@@ -22,9 +30,10 @@ public abstract class Selector : EventListener
         {
             return;
         }
-        
+
         RaycastHit hit;
-        if (Physics.Raycast(camera.transform.position, camera.transform.forward, out hit, Mathf.Infinity, LayerMask()))
+        if (Physics.Raycast(cameraObject.transform.position, cameraObject.transform.forward, out hit, Mathf.Infinity,
+                LayerMask()))
         {
             if (Input.GetMouseButtonDown(0))
             {
