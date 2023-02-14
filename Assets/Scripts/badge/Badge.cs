@@ -13,10 +13,12 @@ public class Badge : EventListener
         if (black)
         {
             line1.ToDisplay = eventData.Players.BlackPlayerName;
+            line2.ToDisplay = eventData.Players.BlackPlayerRating + "";
         }
         else
         {
             line1.ToDisplay = eventData.Players.WhitePlayerName;
+            line2.ToDisplay = eventData.Players.WhitePlayerRating + "";
         }
     }
 
@@ -37,7 +39,8 @@ public class Badge : EventListener
     private void DisplayChallenge(EventData eventData)
     {
         line1.ToDisplay = eventData.FriendChallenge.ChallengerName;
-        line2.ToDisplay = eventData.FriendChallenge.TimeControlString + " " + eventData.FriendChallenge.ScoringTypeTranslated;
+        line2.ToDisplay = eventData.FriendChallenge.TimeControlString + " " +
+                          eventData.FriendChallenge.ScoringTypeTranslated;
     }
 
     [Listen(EventName.ChallengeDeclined)]

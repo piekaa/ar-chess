@@ -37,6 +37,9 @@ public enum EventName
     
     ChallengeAccepted,
     ChallengeDeclined,
+    
+    Unauthorized,
+    LoggeIn
 }
 
 public class EventData
@@ -58,7 +61,7 @@ public class EventData
     public readonly Players Players;
 
     public readonly FriendChallenge FriendChallenge;
-    
+
     public EventData()
     {
     }
@@ -135,12 +138,16 @@ public class EventData
 public class Players
 {
     public readonly string WhitePlayerName;
+    public readonly int WhitePlayerRating;
     public readonly string BlackPlayerName;
-
-    public Players(string whitePlayerName, string blackPlayerName)
+    public readonly int BlackPlayerRating;
+    
+    public Players(string whitePlayerName, int? whitePlayerRating, string blackPlayerName, int? blackPlayerRating)
     {
         WhitePlayerName = whitePlayerName ?? "";
+        WhitePlayerRating = whitePlayerRating ?? 0;
         BlackPlayerName = blackPlayerName ?? "";
+        BlackPlayerRating = blackPlayerRating ?? 0;
     }
 }
 

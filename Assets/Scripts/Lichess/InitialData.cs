@@ -17,6 +17,7 @@ public class InitialDataData
 public class InitialDataPlayer
 {
     public InitialDataColor color;
+    public int rating;
     public InitialDataUser user;
 }
 
