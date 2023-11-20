@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f573ad8933434b541bda7bcd5b54fa82, type: 3}
+  m_Name: DynamicMaterialsForPiece
+  m_EditorClassIdentifier: 
+  hoverBeforeSelect: {fileID: 2100000, guid: a27dd2c1eef80f4469b528d224482431, type: 2}
+  hoverAfterSelect: {fileID: 0}
+  select: {fileID: 2100000, guid: 14c2d0298e625e642b5762bd8c5dc251, type: 2}
+  check: {fileID: 2100000, guid: 9f18747b93129504ca1e0f29888f34c5, type: 2}

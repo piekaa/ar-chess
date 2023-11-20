@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f573ad8933434b541bda7bcd5b54fa82, type: 3}
+  m_Name: DynamicMaterialsForSquare
+  m_EditorClassIdentifier: 
+  hoverBeforeSelect: {fileID: 0}
+  hoverAfterSelect: {fileID: 2100000, guid: 26b7902ef27b8604fb191f6c0a50e891, type: 2}
+  select: {fileID: 2100000, guid: 2c9b20c5ef7a7df4a8dc4d713628672e, type: 2}
+  check: {fileID: 2100000, guid: 495cce43fe70b3e4d9a3eaf0f50d867c, type: 2}
